@@ -1,3 +1,4 @@
+import {applyTraitHistory} from './trait/rhythm.mjs';
 import {validationLabel} from "./validation-labels.mjs";
 import {messageError} from './localized-error.mjs';
 import {editorSpatialMethods,spatialBone,spatialSkin} from './editor-spatial.mjs';
@@ -332,6 +333,7 @@ export class Editor extends EventTarget {
       frame.objects[i] = replacements.get(frame.objects[i].unique_id);
   }
   _applyCommand(command, direction, drawingPrepared) {
+    if(applyTraitHistory(this,command,direction))return;
     if(applyDrawingCommand(this,command,direction,drawingPrepared))return;
     if(applyAudioCommand(this,command,direction))return;
     if(applyPaletteCommand(this,command,direction))return;

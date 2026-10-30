@@ -5,7 +5,7 @@
 //   node scripts/smoke-video-export.mjs                 the source tree
 //   node scripts/smoke-video-export.mjs --packaged      release/<platform>-unpacked
 //
-// The app's own export commands run against the startup scene (ten frames) through
+// The app's own export commands run against an editable Trait motion (24 frames) through
 // the bundled encoder. Only the native save dialog is replaced, by a fixed path:
 // production IPC still receives no caller-selected write path. Each file is then
 // decoded by the same ffmpeg; a file that does not decode, or has no frames, fails.
@@ -20,9 +20,9 @@ import { _electron as electron } from '../tests/support/playwright.mjs';
 
 const appRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const packaged = process.argv.includes('--packaged');
-const unpacked = process.platform === 'win32' ? ['win-unpacked', 'StykAnimate.exe']
-  : process.platform === 'darwin' ? [process.arch === 'arm64' ? 'mac-arm64' : 'mac', 'StykAnimate.app', 'Contents', 'MacOS', 'StykAnimate']
-  : [process.arch === 'arm64' ? 'linux-arm64-unpacked' : 'linux-unpacked', 'stykanimate'];
+const unpacked = process.platform === 'win32' ? ['win-unpacked', 'Trait Studio.exe']
+  : process.platform === 'darwin' ? [process.arch === 'arm64' ? 'mac-arm64' : 'mac', 'Trait Studio.app', 'Contents', 'MacOS', 'Trait Studio']
+  : [process.arch === 'arm64' ? 'linux-arm64-unpacked' : 'linux-unpacked', 'trait-studio'];
 const executablePath = packaged ? process.env.STYK_PACKAGED_EXECUTABLE || path.join(appRoot, 'release', ...unpacked) : undefined;
 const resources = packaged ? path.join(path.dirname(executablePath), 'resources') : path.join(appRoot, 'build');
 const ffmpeg = path.join(resources, 'video-encoder', process.platform === 'win32' ? 'ffmpeg.exe' : 'ffmpeg');
@@ -37,6 +37,10 @@ try {
   app = await electron.launch({ executablePath, args: packaged ? [] : [appRoot], cwd: appRoot, timeout: 60000, env: { ...process.env, STYK_USER_DATA_DIR: work } });
   const page = await app.firstWindow({ timeout: 60000 });
   await page.waitForFunction(() => window.styk?.ready === true, undefined, { timeout: 60000 });
+  await page.evaluate(async () => {
+    const {insertMotion} = await import('/src/trait/motions.mjs');
+    insertMotion(window.styk.editor, 'run', {frames: 24});
+  });
   for (const [action, extension] of EXPORTS) {
     const target = path.join(work, `clip.${extension}`);
     await app.evaluate(({ dialog }, file) => { dialog.showSaveDialog = async () => ({ canceled: false, filePath: file }); }, target);

@@ -1,3 +1,4 @@
+import {installTraitStudio} from './trait/studio.mjs';
 import {tupleMessages, messageTuple, messageHTML, localizedAttribute, localizedText, appendLocalized, localizedMarkup, clearTranslation, AppLocalization, menuLabelKey} from './localization-bindings.mjs';
 
 import {messageError} from './localized-error.mjs';
@@ -389,7 +390,7 @@ const toasts = createToasts({
   topInset: () => bandBottom(document),
   t: (key, params) => appLocalization?.t(key, params),
   feedback: desktop?.sendTelemetryFeedback
-    ? { label: interfaceText("app.sendFeedback"), labelKey: "app.sendFeedback", run: () => feedbackUI.open({ category: "bug" }) }
+    ? { label: interfaceText("app.sendFeedback"), labelKey: "app.sendFeedback", run: () => actions.feedback() }
     : null,
 });
 let drawingController, timelineUI, timelineHost,
@@ -6387,8 +6388,8 @@ async function init() {
       ? (value) => desktop.setEditorSettings(value)
       : undefined,
     onResetWorkspace: () => workspaceLayout?.reset(),
-    onPrivacy: desktop?.getTelemetryState ? () => privacyUI.open() : undefined,
-    onFeedback: desktop?.sendTelemetryFeedback ? options => feedbackUI.open(options) : undefined,
+    onPrivacy: () => actions.privacy(),
+    onFeedback: () => actions.feedback(),
     onDonate: desktop?.openDonate ? () => desktop.openDonate() : undefined,
   });
   state.settings = editorSettings.value;
@@ -6679,7 +6680,8 @@ async function init() {
   window.styk.telemetry = telemetry;
   window.styk.privacyUI = privacyUI;
   updateNotice = new UpdateUI(desktop, { onRestart: () => actions['restart-update']() });
-  queueStartupPrompts();
+  installTraitStudio({editor, actions, pause, finishEdit: finishCurrentEdit, fail, toast, overlays});
+  // This independent fork does not request analytics consent or contact upstream services.
   void telemetryInit.then(() => telemetry.timing('startup_ms', performance.now()));
   // Prompts wait for the first rendered frame.
   requestAnimationFrame(() => overlays.markReady());

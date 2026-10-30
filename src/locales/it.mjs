@@ -1,6 +1,6 @@
 /** Independently written Italian common controls; not a complete app translation. */
 export default Object.freeze({
-  'app.name': 'StykAnimate',
+  'app.name': 'Trait Studio',
   'app.untitled': 'Senza titolo',
   'common.apply': 'Applica',
   'common.cancel': 'Annulla',
@@ -52,7 +52,7 @@ export default Object.freeze({
   'settings.shortcuts': 'Scorciatoie',
   'settings.feedback': 'Feedback',
   'settings.language': 'Lingua',
-  'settings.donate': 'Dona',
+  'settings.donate': "GitHub",
   'settings.uiScale': 'Scala interfaccia',
   'settings.resetScale': 'Torna alla scala automatica',
   'settings.autoScale': 'Automatica',

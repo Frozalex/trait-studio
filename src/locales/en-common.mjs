@@ -1,6 +1,6 @@
 /** Common editor vocabulary. Product copy remains owned by each UI module. */
 export default Object.freeze({
-  'app.name': 'StykAnimate',
+  'app.name': 'Trait Studio',
   'app.untitled': 'Untitled',
   'common.apply': 'Apply',
   'common.cancel': 'Cancel',
@@ -52,7 +52,7 @@ export default Object.freeze({
   'settings.shortcuts': 'Shortcuts',
   'settings.feedback': 'Feedback',
   'settings.language': 'Language',
-  'settings.donate': 'Donate',
+  'settings.donate': "GitHub",
   'settings.uiScale': 'UI scale',
   'settings.resetScale': 'Back to automatic scale',
   'settings.autoScale': 'Automatic',

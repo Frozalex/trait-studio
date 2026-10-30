@@ -112,3 +112,5 @@
 @import url("./features/home.css");  /* Home and the tutorials' strip, mark and pointer (docs/HOME.md, docs/TUTORIALS.md) */
 @import url("./features/support-desktop.css");  /* the Feedback shell over the lazy support-bridge.css */
 @import url("./features/touch.css");  /* the touch interface's components (docs/TOUCH.md) */
+
+@import url("./features/trait.css");

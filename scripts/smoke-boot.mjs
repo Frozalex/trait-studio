@@ -18,9 +18,9 @@ import { _electron as electron } from '../tests/support/playwright.mjs';
 
 const appRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const packaged = process.argv.includes('--packaged');
-const unpacked = process.platform === 'win32' ? ['win-unpacked', 'StykAnimate.exe']
-  : process.platform === 'darwin' ? [process.arch === 'arm64' ? 'mac-arm64' : 'mac', 'StykAnimate.app', 'Contents', 'MacOS', 'StykAnimate']
-  : [process.arch === 'arm64' ? 'linux-arm64-unpacked' : 'linux-unpacked', 'stykanimate'];
+const unpacked = process.platform === 'win32' ? ['win-unpacked', 'Trait Studio.exe']
+  : process.platform === 'darwin' ? [process.arch === 'arm64' ? 'mac-arm64' : 'mac', 'Trait Studio.app', 'Contents', 'MacOS', 'Trait Studio']
+  : [process.arch === 'arm64' ? 'linux-arm64-unpacked' : 'linux-unpacked', 'trait-studio'];
 const executablePath = packaged ? process.env.STYK_PACKAGED_EXECUTABLE || path.join(appRoot, 'release', ...unpacked) : undefined;
 
 const profile = await mkdtemp(path.join(os.tmpdir(), 'styk-boot-'));
@@ -45,8 +45,9 @@ try {
     vfw: (await window.stykDesktop.getVfwCapabilities({ width: 320, height: 240 })).available === true,
     updates: (await window.stykDesktop.getUpdateState()).status,
     title: document.title,
+    releaseHistory: await window.stykDesktop.getReleaseHistory(),
   }));
-  expect('The window opens on the editor', /StykAnimate/.test(facts.title), facts.title);
+  expect('The window opens on the editor', /Trait Studio/.test(facts.title), facts.title);
   expect('The desktop bridge is present and Node is not exposed to the page', facts.desktop && !facts.nodeExposed);
   expect('The bridge reports this platform', facts.platform === process.platform, facts.platform);
   expect('The renderer started', ['WebGPU', 'Canvas 2D fallback'].includes(facts.renderer), facts.renderer);
@@ -60,9 +61,23 @@ try {
   expect('The update service starts without an error', facts.updates !== 'error', facts.updates);
   if (!packaged) expect('Source builds do not update', facts.updates === 'unavailable', facts.updates);
   if (packaged && process.platform === 'linux' && executablePath?.endsWith('.AppImage')) {
-    expect('The Linux AppImage enables updates', facts.updates !== 'unavailable', facts.updates);
+    expect('Updates are downloaded from the Trait Studio GitHub releases', facts.updates === 'unavailable', facts.updates);
   }
+  expect('Packaged release notes are readable', facts.releaseHistory?.[0]?.markdown?.includes('Trait')) ;
+  await page.evaluate(async () => {
+    const {capturePose} = await import('/src/trait/poses.mjs');
+    await window.trait.bank.ready;
+    await window.trait.bank.add(capturePose(window.styk.editor, 'Restart proof'));
+  });
   expect('The page raised no errors', errors.length === 0, errors[0]);
+  await app.close(); app = null;
+  app = await electron.launch({ executablePath, args: packaged ? [] : [appRoot], cwd: appRoot, timeout: 60000, env: { ...process.env, STYK_USER_DATA_DIR: profile } });
+  const restarted = await app.firstWindow({timeout: 60000});
+  await restarted.waitForFunction(() => window.styk?.ready && window.trait, undefined, {timeout: 60000});
+  expect('Poses survive a complete desktop restart', await restarted.evaluate(async () => {
+    await window.trait.bank.ready;
+    return window.trait.bank.poses.some(pose => pose.name === 'Restart proof');
+  }));
 } finally {
   await app?.close().catch(() => {});
   await rm(profile, { recursive: true, force: true });

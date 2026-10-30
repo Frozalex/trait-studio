@@ -121,6 +121,8 @@ contextBridge.exposeInMainWorld('stykDesktop', Object.freeze({
   openPublicLibraryPage: id => ipcRenderer.invoke('styk:public-library-page', id),
   takePublicLibraryLink: () => ipcRenderer.invoke('styk:public-library-link'),
   onPublicLibraryLink: callback => subscribe('styk:public-library-link', callback),
+  getTraitPoses: () => ipcRenderer.invoke('trait:poses-get'),
+  setTraitPoses: poses => ipcRenderer.invoke('trait:poses-set', poses),
   getWorkspacePreferences: () => ipcRenderer.invoke('styk:workspace-preferences-get'),
   setWorkspacePreferences: (preferences) => ipcRenderer.invoke('styk:workspace-preferences-set', preferences),
   getEditorSettings: () => ipcRenderer.invoke('styk:editor-settings-get'),

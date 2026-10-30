@@ -1,21 +1,22 @@
 {
-  "name": "stykanimate-webapp",
-  "productName": "StykAnimate",
-  "version": "1.2.5",
-  "description": "A WebGPU desktop workspace for Pivot animation and stick figures.",
+  "name": "trait-studio",
+  "productName": "Trait Studio",
+  "version": "1.3.0",
+  "description": "An open-source stick animation studio with editable motion presets, poses and rhythm guides.",
+  "author": "Trait Studio contributors; original engine by StykAnimate contributors",
   "license": "GPL-3.0-or-later",
-  "homepage": "https://stykanimate.com",
+  "homepage": "https://github.com/Frozalex/trait-studio",
   "repository": {
     "type": "git",
-    "url": "https://github.com/filippocalippo/StykAnimate-App.git"
+    "url": "https://github.com/Frozalex/trait-studio.git"
   },
   "bugs": {
-    "url": "https://github.com/filippocalippo/StykAnimate-App/issues"
+    "url": "https://github.com/Frozalex/trait-studio/issues"
   },
   "private": true,
   "type": "module",
   "main": "desktop/main.cjs",
-  "desktopName": "stykanimate.desktop",
+  "desktopName": "trait-studio.desktop",
   "scripts": {
     "start": "electron .",
     "dev": "electron .",
@@ -91,10 +92,12 @@
     "release:prepare": "node scripts/prepare-release.mjs",
     "changelog:check": "node scripts/check-changelog.mjs",
     "release:verify": "node scripts/release-assets.mjs",
-    "release:publish": "node scripts/publish-release.mjs"
+    "release:publish": "node scripts/publish-release.mjs",
+    "test:trait": "node --test tests/trait-studio.test.mjs",
+    "test:trait:browser": "node scripts/test-trait-browser.mjs"
   },
   "dependencies": {
-    "electron-updater": "6.6.2"
+    "electron-updater": "6.8.11"
   },
   "devDependencies": {
     "electron": "39.8.10",
@@ -105,17 +108,17 @@
   },
   "build": {
     "beforePack": "scripts/before-pack.cjs",
-    "appId": "app.stykanimate.desktop",
+    "appId": "io.github.frozalex.traitstudio",
     "protocols": [
       {
-        "name": "StykAnimate",
+        "name": "Trait Studio",
         "schemes": [
-          "stykanimate"
+          "traitstudio"
         ]
       }
     ],
-    "productName": "StykAnimate",
-    "artifactName": "StykAnimate-${version}-${os}-${arch}.${ext}",
+    "productName": "Trait Studio",
+    "artifactName": "TraitStudio-${version}-${os}-${arch}.${ext}",
     "toolsets": {
       "appimage": "1.0.3"
     },
@@ -228,7 +231,7 @@
         "nsis",
         "portable"
       ],
-      "icon": "desktop/assets/stykanimate.ico",
+      "icon": "desktop/assets/trait-studio.ico",
       "signExecutable": false,
       "extraResources": [
         {
@@ -243,20 +246,20 @@
       ]
     },
     "nsis": {
-      "installerIcon": "desktop/assets/stykanimate.ico",
-      "uninstallerIcon": "desktop/assets/stykanimate.ico",
-      "installerHeaderIcon": "desktop/assets/stykanimate.ico",
+      "installerIcon": "desktop/assets/trait-studio.ico",
+      "uninstallerIcon": "desktop/assets/trait-studio.ico",
+      "installerHeaderIcon": "desktop/assets/trait-studio.ico",
       "include": "desktop/installer.nsh",
-      "artifactName": "StykAnimate-${version}-Setup-${arch}.${ext}",
+      "artifactName": "TraitStudio-${version}-Setup-${arch}.${ext}",
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true
     },
     "portable": {
-      "artifactName": "StykAnimate-${version}-Portable-${arch}.${ext}"
+      "artifactName": "TraitStudio-${version}-Portable-${arch}.${ext}"
     },
     "mac": {
-      "icon": "desktop/assets/stykanimate.icns",
+      "icon": "desktop/assets/trait-studio.icns",
       "target": [
         "dmg",
         "zip"
@@ -265,20 +268,20 @@
       "hardenedRuntime": true
     },
     "linux": {
-      "icon": "desktop/assets/stykanimate.png",
+      "icon": "desktop/assets/trait-studio.png",
       "target": [
         "AppImage"
       ],
       "category": "Graphics",
-      "executableName": "stykanimate",
+      "executableName": "trait-studio",
       "syncDesktopName": true,
       "synopsis": "Stick figure animation"
     },
     "publish": [
       {
         "provider": "github",
-        "owner": "filippocalippo",
-        "repo": "styk-animate-releases",
+        "owner": "Frozalex",
+        "repo": "trait-studio",
         "private": false,
         "releaseType": "draft"
       }

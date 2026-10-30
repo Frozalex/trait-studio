@@ -1,12 +1,20 @@
-# StykAnimate changelog
+# Trait Studio changelog
 
-What's new in each version of StykAnimate.
+Trait Studio begins at version 1.3.0. Earlier releases and inherited development entries below belong to StykAnimate.
 
 <!-- Maintainers: follow the writing guide in docs/RELEASING.md before adding entries. -->
 
 ## [Unreleased]
 
+## [1.3.0]
+
+Trait Studio: motions, poses and rhythm
+
 ### Added
+
+- Trait Workshop adds six editable motion clips with direction, color and duration controls.
+- Save, reuse and exchange a personal library of poses while preserving the character’s position.
+- Rhythm guides provide tap tempo, an intro offset and named markers saved with the project.
 
 - StykAnimate is now open source: its code is on GitHub under the GPL-3.0 license.
 - Everyday Props · Pivot 3D: 30 editable everyday objects with working hinges and wheels for your animations.
@@ -20,6 +28,7 @@ What's new in each version of StykAnimate.
 
 ### Changed
 
+- Trait Studio has its own identity and GitHub releases, with local libraries and no connection to upstream analytics services.
 - Ctrl-dragging a node that uses IK stretches it like any other node.
 - A calmer top bar: the menus are in the StykAnimate menu, and your open projects take their place.
 

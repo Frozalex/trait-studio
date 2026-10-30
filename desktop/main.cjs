@@ -16,7 +16,6 @@ const { workspaceDirectory } = require('./workspace-instance.cjs');
 const { spawn } = require('node:child_process');
 const { randomBytes } = require('node:crypto');
 const { WorkspacePreferences } = require('./preferences.cjs');
-const { SupportService } = require('./support.cjs');
 const { ProjectFiles } = require('./project-files.cjs');
 const { FontService } = require('./font-service.cjs');
 const { VideoExportService } = require('./video-export-service.cjs');
@@ -29,7 +28,7 @@ const { PublicLibrary, DownloadLedger, isPublicId } = require('./public-library.
 const { TelemetryService } = require('./telemetry.cjs');
 const { UpdateService, updateAvailabilityDetails } = require('./updates.cjs');
 const releaseInfo = require('./release-info.json');
-const getReleaseHistory = require('./release-history.cjs').createReleaseHistory();
+const getReleaseHistory = async () => [{version: releaseInfo.version, markdown: `# ${releaseInfo.title}\n\n${releaseInfo.notes.map(note => '- ' + note).join('\n')}`}];
 let telemetryBuild = {};
 try { telemetryBuild = require('./telemetry-build.json'); } catch { /* Unpackaged/older source has unknown build metadata. */ }
 const { RELEASES_URL, DONATE_URL } = require('./release-links.cjs');
@@ -66,14 +65,14 @@ let updates;
 let startupShown = false;
 let traceRunning = false;
 let pageLoaded = false;
-let pendingProtocol = process.argv.find(value => /^stykanimate:\/\//i.test(value));
+let pendingProtocol = process.argv.find(value => /^traitstudio:\/\//i.test(value));
 // A public library link (stykanimate://library/<id>) waits here until the
 // workspace takes it, so a link that starts the app is not lost during startup.
 let publicLibraryLink = null;
 function handleProtocol(value) {
   try {
     const url = new URL(value);
-    if (url.protocol !== 'stykanimate:' || url.username || url.password || url.search || url.hash || url.port) return false;
+    if (url.protocol !== 'traitstudio:' || url.username || url.password || url.search || url.hash || url.port) return false;
     const root = ['', '/'].includes(url.pathname), asset = /^\/([^/]+)\/?$/.exec(url.pathname)?.[1];
     if (!(root && ['open', 'privacy', 'library'].includes(url.hostname)) && !(url.hostname === 'library' && isPublicId(asset))) return false;
     if (!window || !pageLoaded) { pendingProtocol = value; return true; }
@@ -94,7 +93,7 @@ let pendingFiles = process.argv.slice(app.isPackaged ? 1 : 2).filter((arg) => /\
 // Vulkan WebGPU opt-in to reach the GPU; see gpu-switches.cjs.
 applyGpuSwitches(app.commandLine);
 
-app.setName('StykAnimate');
+app.setName('Trait Studio');
 const profileDirectory = process.env.STYK_USER_DATA_DIR || (!app.isPackaged ? path.join(APP_ROOT, '.desktop-data') : null);
 if (profileDirectory) {
   mkdirSync(profileDirectory, { recursive: true });
@@ -114,7 +113,7 @@ else {
   app.on('second-instance', (_event, argv) => {
     // Each ordinary launch owns its project. Protocol links still target the
     // primary workspace without opening an extra editor.
-    for (const value of argv.filter(arg => /^stykanimate:\/\//i.test(arg))) handleProtocol(value);
+    for (const value of argv.filter(arg => /^traitstudio:\/\//i.test(arg))) handleProtocol(value);
   });
   app.on('open-url', (event, url) => { event.preventDefault(); handleProtocol(url); });
   app.on('open-file', (event, file) => { event.preventDefault(); queueOpenFile(file); });
@@ -296,26 +295,11 @@ function registerIpc() {
     }, () => { quitting = false; });
   });
   const withTelemetry = handler => async (event, value) => { trusted(event); await telemetryReady; if (!telemetry) throw messageError(new Error(''), 'desktop.main.errors.privacySettingsAreUnavailablePleaseRestartStykAnimate', {}); return handler(value); };
-  const support = new SupportService({ directory: app.getPath('userData'), version: app.getVersion(), development: !app.isPackaged });
-  handle('styk:support-context', event => { trusted(event); return support.context(); });
-  handle('styk:support-live', (event, id) => { trusted(event); return support.connectLive(id, value => { if (!event.sender.isDestroyed()) event.sender.send('styk:support-live-event', value); }); });
-  handle('styk:support-live-close', (event, connection) => { trusted(event); if (Number.isSafeInteger(connection)) support.closeLive(connection); });
-  app.on('browser-window-created', (_event, createdWindow) => createdWindow.on('closed', () => support.closeLive()));
-  handle('styk:support-save-state', (event, value) => { trusted(event); return support.saveState(value); });
-  handle('styk:support-request', (event, value) => { trusted(event); return support.request(value); });
-  handle('styk:support-copy-access', async event => { trusted(event); clipboard.writeText(await support.accessLink()); return { copied: true }; });
-  handle('styk:support-restore', (event, key) => { trusted(event); return support.restore(key); });
-  handle('styk:support-download', async (event, value) => {
-    trusted(event);
-    if (!/^[a-f0-9]{32}$/.test(value?.threadId || '') || !/^[a-f0-9]{32}$/.test(value?.fileId || '')) throw messageError(new Error(''), 'desktop.main.errors.invalidAttachment', {});
-    const result = await support.request({ path: `/threads/${value.threadId}/files/${value.fileId}` });
-    if (!result.ok) throw messageError(new Error(''), 'desktop.main.errors.attachmentCouldNotBeDownloaded', {});
-    const encoded = /filename\*=UTF-8''([^;]+)/.exec(result.disposition)?.[1];
-    let name = 'attachment'; try { if (encoded) name = path.basename(decodeURIComponent(encoded)); } catch { /* Safe fallback. */ }
-    const destination = await dialog.showSaveDialog(window, { title: t('desktop.main.saveReportAttachment'), defaultPath: name });
-    if (destination.canceled || !destination.filePath) return { saved: false };
-    await atomicWrite(destination.filePath, Buffer.from(result.bytes)); return { saved: true };
-  });
+  // Trait Studio uses GitHub Issues; upstream support endpoints are unavailable.
+  for (const channel of ['context', 'live', 'save-state', 'request', 'copy-access', 'restore', 'download']) {
+    handle(`styk:support-${channel}`, event => { trusted(event); throw new Error('Use Trait Studio GitHub Issues for support.'); });
+  }
+  handle('styk:support-live-close', event => { trusted(event); });
   handle('styk:telemetry-state', withTelemetry(() => telemetry.getState()));
   handle('styk:telemetry-consent', withTelemetry(value => telemetry.setConsent(value)));
   handle('styk:telemetry-record', withTelemetry(value => telemetry.record(value)));
@@ -324,7 +308,7 @@ function registerIpc() {
   handle('styk:telemetry-delete', withTelemetry(() => telemetry.deleteData()));
   handle('styk:telemetry-feedback', withTelemetry(value => telemetry.feedback(value)));
   handle('styk:telemetry-export', withTelemetry(async () => {
-    const result = await dialog.showSaveDialog(window, { title: t('desktop.main.saveOptionalTelemetryReport'), defaultPath: 'StykAnimate-telemetry.json', filters: [{ name: t('desktop.main.jsonReport'), extensions: ['json'] }] });
+    const result = await dialog.showSaveDialog(window, { title: t('desktop.main.saveOptionalTelemetryReport'), defaultPath: 'Trait Studio-telemetry.json', filters: [{ name: t('desktop.main.jsonReport'), extensions: ['json'] }] });
     if (result.canceled || !result.filePath) return { saved: false };
     await fs.writeFile(result.filePath, JSON.stringify(telemetry.preview(), null, 2), 'utf8'); return { saved: true };
   }));
@@ -343,7 +327,7 @@ function registerIpc() {
       await contentTracing.startRecording({ included_categories: ['v8.execute', 'disabled-by-default-v8.cpu_profiler', 'devtools.timeline'], recording_mode: 'record-until-full', trace_buffer_size_in_kb: 16384 });
       await new Promise(resolve => setTimeout(resolve, !app.isPackaged && process.env.STYK_TRACE_TEST === '1' ? 2000 : 30000));
       temporary = await contentTracing.stopRecording();
-      const result = await dialog.showSaveDialog(window, { title: t('desktop.main.saveLocalPerformanceTraceReviewBeforeSharing'), defaultPath: 'StykAnimate-performance-trace.json', filters: [{ name: t('desktop.main.chromePerfettoTrace'), extensions: ['json'] }] });
+      const result = await dialog.showSaveDialog(window, { title: t('desktop.main.saveLocalPerformanceTraceReviewBeforeSharing'), defaultPath: 'Trait Studio-performance-trace.json', filters: [{ name: t('desktop.main.chromePerfettoTrace'), extensions: ['json'] }] });
       if (result.canceled || !result.filePath) return { saved: false };
       await fs.copyFile(temporary, result.filePath); return { saved: true };
     } finally { traceRunning = false; if (temporary) await fs.unlink(temporary).catch(() => {}); }
@@ -356,7 +340,7 @@ function registerIpc() {
   // The community library (desktop/public-library.cjs): what people share on the website, read through its API.
   // Which assets were already downloaded once (public ids only): the site counts each person's first download of an asset, no more.
   const communityDownloads = new DownloadLedger(new WorkspacePreferences(app.getPath('userData'), { filename: 'community-downloads.json', maxBytes: 128 * 1024 }));
-  const publicLibrary = new PublicLibrary({site: process.env.STYK_PUBLIC_LIBRARY_URL, downloads: communityDownloads});
+  const publicLibrary = {catalog: async () => ({items: [], categories: []}), preview: async () => {throw new Error('The upstream catalogue is not connected in this fork.');}, asset: async () => {throw new Error('Import a local figure instead.');}, pageFor: () => 'https://github.com/Frozalex/trait-studio'};
   handle('styk:public-library-list', (event, refresh = false) => { trusted(event); return publicLibrary.catalog({refresh: refresh === true}); });
   handle('styk:public-library-preview', (event, id) => { trusted(event); return publicLibrary.preview(id); });
   handle('styk:public-library-read', async (event, id) => {
@@ -463,6 +447,13 @@ function registerIpc() {
   });
   const preferences = new WorkspacePreferences(app.getPath('userData'));
   const editorSettings = new WorkspacePreferences(app.getPath('userData'), { filename: 'editor-settings.json' });
+  const traitPoses = new WorkspacePreferences(app.getPath('userData'), {filename: 'trait-poses.json', maxBytes: 4 * 1024 * 1024});
+  handle('trait:poses-get', event => { trusted(event); return traitPoses.get(); });
+  handle('trait:poses-set', (event, value) => {
+    trusted(event);
+    if (value?.version !== 1 || !Array.isArray(value.poses) || value.poses.length > 48) throw new Error('Invalid Trait pose library.');
+    return traitPoses.set(value);
+  });
   // The person's effect presets (src/vfx-user-presets.mjs): their own file, so they never crowd the 16 KB settings.
   const vfxPresets = new WorkspacePreferences(app.getPath('userData'), { filename: 'vfx-presets.json', maxBytes: 1024 * 1024 });
   const fonts = new FontService();
@@ -736,7 +727,7 @@ function registerIpc() {
     documentState = { name, dirty, revision: String(state?.revision || '').slice(0, 160), unsaved,
       unsavedName: String(state?.unsavedName || name).slice(0, 180) };
     // The title names the project in front; its dot is that project's own.
-    window.setTitle(`${(state?.activeDirty ?? dirty) ? '• ' : ''}${name} — StykAnimate`);
+    window.setTitle(`${(state?.activeDirty ?? dirty) ? '• ' : ''}${name} — Trait Studio`);
     window.setDocumentEdited(dirty);
   });
 }
@@ -757,8 +748,8 @@ async function createWindow() {
   window = new BrowserWindow({
     width: 1560, height: 1000, minWidth: 1000, minHeight: 680,
     backgroundColor: '#0a0b0f', show: false,
-    title: 'StykAnimate',
-    icon: path.join(__dirname, 'assets', 'stykanimate.png'),
+    title: 'Trait Studio',
+    icon: path.join(__dirname, 'assets', 'trait-studio.png'),
     frame: process.platform === 'darwin',
     ...(process.platform === 'darwin' ? { titleBarStyle: 'hidden', trafficLightPosition: { x: 14, y: 16 } } : {}),
     autoHideMenuBar: process.platform !== 'darwin',
@@ -851,8 +842,8 @@ async function start() {
   localization.setLocale(normalizeLocale(saved.locale));
   const availability = updateAvailabilityDetails({ packaged: app.isPackaged, platform: process.platform,
     appImage: process.env.APPIMAGE,
-    portable: Boolean(process.env.PORTABLE_EXECUTABLE_DIR), installed: existsSync(path.join(path.dirname(process.execPath), 'Uninstall StykAnimate.exe')) });
-  const unavailable = availability.message;
+    portable: Boolean(process.env.PORTABLE_EXECUTABLE_DIR), installed: existsSync(path.join(path.dirname(process.execPath), 'Uninstall Trait Studio.exe')) });
+  const unavailable = 'Trait Studio updates are available from its GitHub Releases page.';
   const updater = unavailable ? null : process.platform === 'linux'
     ? new (require('./appimage-updater.cjs').LinuxAppImageUpdater)()
     : require('electron-updater').autoUpdater;
@@ -861,8 +852,8 @@ async function start() {
     currentVersion: app.getVersion(), unavailable, unavailableMessageKey: availability.messageKey,
     onState: value => { if (value.status === 'error') quitting = false; if (window && !window.isDestroyed()) window.webContents.send('styk:update-state-changed', value); },
   });
-  if (app.isPackaged) app.setAsDefaultProtocolClient('stykanimate');
-  telemetryReady = new TelemetryService({ directory: app.getPath('userData'), schemaPath: path.join(app.isPackaged ? path.join(process.resourcesPath, 'web') : APP_ROOT, 'src', 'telemetry-schema.mjs'), version: app.getVersion(), development: !app.isPackaged,
+  if (app.isPackaged) app.setAsDefaultProtocolClient('traitstudio');
+  telemetryReady = new TelemetryService({ directory: app.getPath('userData'), schemaPath: path.join(app.isPackaged ? path.join(process.resourcesPath, 'web') : APP_ROOT, 'src', 'telemetry-schema.mjs'), version: app.getVersion(), development: !app.isPackaged, siteUrl: '',
     build: telemetryBuild.build, internal: telemetryBuild.internal === true,
     onState: value => { if (window && !window.isDestroyed()) window.webContents.send('styk:telemetry-state-changed', value); },
   }).init().then(service => { telemetry = service; return service; }).catch(() => { /* Optional reporting cannot prevent startup. */ });
@@ -878,7 +869,7 @@ async function start() {
       telemetry.record({ epoch: telemetry.epoch, data: { gauges: { process_cpu_percent: metrics.reduce((sum, item) => sum + (item.cpu?.percentCPUUsage || 0), 0) } } });
     }
   }, 60000); memoryTimer.unref();
-  library = new LibraryStore(process.env.STYK_LIBRARY_DIR || path.join(app.getPath('documents'), 'StykAnimate', 'library'));
+  library = new LibraryStore(process.env.STYK_LIBRARY_DIR || path.join(app.getPath('documents'), 'Trait Studio', 'library'));
   // A temporarily unavailable Documents volume should not prevent animation work.
   void library.init().catch(error => console.warn('Library initialization:', error.message));
   backend = await startDesktopHost({

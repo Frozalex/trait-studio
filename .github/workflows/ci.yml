@@ -50,9 +50,6 @@ jobs:
       - name: Codec service tests
         run: python -m unittest discover -s backend -p "test_*.py"
 
-  web:
-    uses: ./.github/workflows/web-verify.yml
-
   linux-app:
     # Builds the Linux app from source exactly as a release would, then boots it.
     name: Linux app
@@ -94,13 +91,9 @@ jobs:
         run: |
           xvfb-run -a npm run test:boot:packaged
           version=$(node -p 'JSON.parse(require("fs").readFileSync("package.json")).version')
-          STYK_PACKAGED_EXECUTABLE="$GITHUB_WORKSPACE/release/StykAnimate-$version-linux-x86_64.AppImage" xvfb-run -a npm run test:boot:packaged
+          STYK_PACKAGED_EXECUTABLE="$GITHUB_WORKSPACE/release/TraitStudio-$version-linux-x86_64.AppImage" xvfb-run -a npm run test:boot:packaged
       - name: Export video with the bundled encoder
         run: xvfb-run -a npm run test:export:packaged
-      - name: Verify Linux updates and save before restart
-        run: |
-          STYK_PACKAGED_EXECUTABLE="$GITHUB_WORKSPACE/release/linux-unpacked/stykanimate" xvfb-run -a npm run test:updates:desktop
-          xvfb-run -a npm run test:updates:linux
       - name: Upload the build evidence
         uses: actions/upload-artifact@v4
         with:
@@ -109,6 +102,4 @@ jobs:
             release/*.AppImage
             release/latest-linux.yml
             artifacts/sidecar-smoke.json
-            artifacts/updates/smoke.json
-            artifacts/updates/appimage-smoke.json
           retention-days: 7
