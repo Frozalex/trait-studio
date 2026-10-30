@@ -6,9 +6,13 @@ Trait Studio begins at version 1.3.0. Earlier releases and inherited development
 
 ## [Unreleased]
 
+## [1.5.0]
+
+Characters and grounded motion
+
 ### Added
 
-- Create geometric characters with adjustable proportions, colours and shapes, then try their joints before adding them to a scene.
+- Create geometric characters with adjustable proportions, colors and shapes, then try their joints before adding them to a scene.
 - Adapt the six motion presets to your character, inspect each pose, and make walking or running characters move forward with grounded foot contacts.
 
 ### Fixed

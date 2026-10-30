@@ -1,7 +1,7 @@
 {
   "name": "trait-studio",
   "productName": "Trait Studio",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "An open-source stick animation studio with editable motion presets, poses and rhythm guides.",
   "author": "Trait Studio contributors; original engine by StykAnimate contributors",
   "license": "GPL-3.0-or-later",

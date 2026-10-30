@@ -1,17 +1,19 @@
-# StykAnimate 1.4.0
+# StykAnimate 1.5.0
 
-Music and poses
+Characters and grounded motion
 
 ### Added
 
-- Windows installers and portable downloads join the Linux AppImage distribution.
-- Rhythm suggestions identify a possible tempo and bass entry from your music, with manual adjustments before applying them.
-- Beat guides and named markers appear in both timelines to help align animation with sound.
-- Pose previews, search and renaming make saved poses easier to find and reuse.
+- Create geometric characters with adjustable proportions, colors and shapes, then try their joints before adding them to a scene.
+- Adapt the six motion presets to your character, inspect each pose, and make walking or running characters move forward with grounded foot contacts.
 
 ### Fixed
 
-- The Trait Workshop fits narrow screens without pushing its movement controls off-screen.
+- Motion presets now preserve limb lengths and provide smoother cycle transitions and jump landings.
+
+### Security
+
+- Updated desktop and installation components to address known security vulnerabilities.
 
 Free to create. Powered by your support.
 

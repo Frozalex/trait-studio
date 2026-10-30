@@ -194,6 +194,12 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.22.1'
+      - run: npm ci --no-audit --no-fund
+        env:
+          ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
       - uses: actions/download-artifact@v4
         with:
           name: linux-appimage
@@ -218,6 +224,12 @@ jobs:
           setup=$(find scan/release -maxdepth 1 -name '*Setup*.exe' -print -quit)
           7z x "$setup" -oscan/installer '$PLUGINSDIR/app-64.7z'
           7z x 'scan/installer/$PLUGINSDIR/app-64.7z' -oscan/windows-app
+          node <<'JS'
+          const fs = require('node:fs'), asar = require('@electron/asar');
+          const archives = fs.readdirSync('scan', {recursive: true}).filter(p => p.endsWith('/app.asar'));
+          if (archives.length !== 2) throw new Error(`Expected two application archives, found ${archives.length}`);
+          for (const archive of archives) asar.extractAll(`scan/${archive}`, `scan/${archive}.contents`);
+          JS
       - name: Scan binaries and extracted application files
         run: |
           clamscan --recursive --infected --max-filesize=512M --max-scansize=2048M --max-files=100000 --log=artifacts/security/antivirus-scan.txt scan
