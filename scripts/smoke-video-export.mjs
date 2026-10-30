@@ -62,6 +62,9 @@ try {
     if (problem) { failures.push(`${extension}: ${problem}`); console.log(`FAIL ${extension} — ${problem}`); }
   }
 } finally {
+  // This test owns its temporary scene: discard it when the ordinary close
+  // protection asks, otherwise a successful export waits on a native dialog.
+  await app?.evaluate(({dialog}) => { dialog.showMessageBox = async () => ({response: 2}); }).catch(() => {});
   await app?.close().catch(() => {});
   await rm(work, { recursive: true, force: true });
 }

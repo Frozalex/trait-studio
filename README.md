@@ -39,7 +39,7 @@ Pour lancer la fenêtre bureau Electron :
 npm start
 ```
 
-Avec npm 12, si l’installation du binaire Electron est bloquée, examine les scripts avec `npm install-scripts ls`, puis autorise celui du paquet officiel Electron avec `npm install-scripts approve electron`. Les fichiers natifs de distribution sont construits avec les scripts du projet ; voir [la construction bureau](docs/DESKTOP-RELEASE.md).
+Avec npm 12, si l’installation du binaire Electron est bloquée, examine les scripts avec `npm install-scripts ls`, puis autorise celui du paquet officiel Electron avec `npm install-scripts approve electron`. Les fichiers natifs de distribution sont construits avec les scripts du projet ; voir [la construction bureau](docs/BUILD-TRAIT.md).
 
 ## Premier mouvement
 
