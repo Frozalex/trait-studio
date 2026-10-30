@@ -22,15 +22,15 @@ L’édition bureau propose notamment MP4, WebM, GIF, APNG et séquences d’ima
 
 ## Télécharger
 
-[Trait Studio 1.4.0 · Windows et Linux](https://github.com/Frozalex/trait-studio/releases/tag/v1.4.0) · [Résultats des vérifications](docs/VALIDATION-1.4.0.md)
+[Trait Studio 1.5.0 · Windows et Linux](https://github.com/Frozalex/trait-studio/releases/tag/v1.5.0) · [Résultats des vérifications](docs/VALIDATION-1.5.0.md)
 
 Sur Windows, utilise **Setup-x64.exe** pour installer le programme ou **Portable-x64.exe** pour le lancer sans installation. Les exécutables ne sont pas signés numériquement.
 
 Sur Linux, télécharge l’AppImage, rends-la exécutable, puis ouvre-la :
 
 ```bash
-chmod +x TraitStudio-1.4.0-linux-x86_64.AppImage
-./TraitStudio-1.4.0-linux-x86_64.AppImage
+chmod +x TraitStudio-1.5.0-linux-x86_64.AppImage
+./TraitStudio-1.5.0-linux-x86_64.AppImage
 ```
 
 Les binaires macOS et les applications mobiles natives ne sont pas fournis.
@@ -83,7 +83,7 @@ Le test navigateur lance et arrête lui-même son serveur local. Les tests utili
 
 ## État du projet
 
-**1.4.0** poursuit la première préversion Trait Studio 1.3.0 sur une base déjà développée. Le dépôt contient les sources, les tests et les procédures de construction. Ce n’est pas une promesse de parité totale ou de supériorité sur Stick Nodes Pro.
+**1.5.0** poursuit la première préversion Trait Studio 1.3.0 sur une base déjà développée. Le dépôt contient les sources, les tests et les procédures de construction. Ce n’est pas une promesse de parité totale ou de supériorité sur Stick Nodes Pro.
 
 L’analyse musicale propose des repères à vérifier à l’écoute ; elle ne garantit pas une détection correcte sur tout morceau. Les mouvements sont des points de départ éditables, à affiner selon la scène. Les applications Android/iOS natives ne sont pas fournies.
 

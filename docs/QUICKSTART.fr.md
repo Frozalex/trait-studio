@@ -8,6 +8,8 @@ Ouvre **Atelier → Personnage** et pars du modèle Élan, Robot ou Triangle. R�
 
 Le modèle choisi est partagé avec l’onglet Mouvements pendant la session. Après réouverture d’un projet, sélectionne un personnage créé avec cet outil et utilise **Reprendre le modèle sélectionné** pour retrouver ses proportions initiales. Les retouches manuelles effectuées ensuite ne sont pas reconstruites par ce bouton.
 
+![Créateur de personnages avec aperçu des articulations](images/character-builder.png)
+
 ## Créer un mouvement
 
 Ouvre **Atelier → Mouvements**, choisis un cycle et règle sa durée en images. **Insérer le mouvement** ajoute un clip modifiable à la scène. Ouvre ce clip pour retoucher les poses avec les outils d’articulation. Pour partir d’un squelette sans animation, choisis **Ajouter un personnage**.
