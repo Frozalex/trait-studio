@@ -1,5 +1,5 @@
 name: Bug report
-description: Something in StykAnimate doesn't work as expected.
+description: Something in Trait Studio doesn't work as expected.
 labels: [bug]
 body:
   - type: markdown
@@ -8,20 +8,20 @@ body:
   - type: input
     id: version
     attributes:
-      label: StykAnimate version
+      label: Trait Studio version
       description: Shown in the About dialog.
-      placeholder: "1.2.5"
+      placeholder: "1.3.0"
     validations:
       required: true
   - type: dropdown
     id: platform
     attributes:
-      label: Where do you use StykAnimate?
+      label: Where do you use Trait Studio?
       options:
         - Windows (Setup)
         - Windows (Portable)
         - Linux (AppImage)
-        - Browser (app.stykanimate.com)
+        - Browser (local server)
         - Built from source
     validations:
       required: true

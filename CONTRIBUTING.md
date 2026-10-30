@@ -1,17 +1,17 @@
-# Contributing to StykAnimate
+# Contributing to Trait Studio
 
-Thanks for helping make StykAnimate better. This guide covers how to report problems, suggest ideas and send changes.
+Thanks for helping make Trait Studio better. This guide covers how to report problems, suggest ideas and send changes.
 
 ## Ask, report or suggest
 
-- **Questions and showing your work:** the [StykAnimate Discord](https://discord.gg/WTssQKBaJp).
-- **Bugs:** open a [bug report](https://github.com/filippocalippo/StykAnimate-App/issues/new?template=bug_report.yml). Include your StykAnimate version, operating system (or browser), the steps to reproduce, and what you expected. A small `.styk` or `.piv` file that shows the problem helps a lot; only share files you are allowed to share.
-- **Ideas:** open a [feature request](https://github.com/filippocalippo/StykAnimate-App/issues/new?template=feature_request.yml) describing the problem you want solved, not only the solution.
+- **Questions and showing your work:** open an issue in this repository.
+- **Bugs:** open a [bug report](https://github.com/Frozalex/trait-studio/issues/new?template=bug_report.yml). Include your Trait Studio version, operating system (or browser), the steps to reproduce, and what you expected. A small `.styk` or `.piv` file that shows the problem helps a lot; only share files you are allowed to share.
+- **Ideas:** open a [feature request](https://github.com/Frozalex/trait-studio/issues/new?template=feature_request.yml) describing the problem you want solved, not only the solution.
 - **Security problems:** never in a public issue; see [SECURITY.md](SECURITY.md).
 
 ## Development setup
 
-Follow [Build from source](README.md#build-from-source). Use the locked dependencies (`npm ci`) and avoid upgrading packages as part of an unrelated change. Run commands from the repository root.
+Follow [Build from source](README.md#démarrer-depuis-les-sources). Use the locked dependencies (`npm ci`) and avoid upgrading packages as part of an unrelated change. Run commands from the repository root.
 
 Before writing code, read [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) and the document in `docs/` that covers the feature you are changing. Those documents are contracts: if your change alters a behavior they describe, update them in the same pull request.
 
@@ -48,4 +48,4 @@ Interface strings live in `src/locales/`. See [docs/TRANSLATING.md](docs/TRANSLA
 
 ## License of contributions
 
-StykAnimate is licensed under the [GNU GPL, version 3 or later](LICENSE). By submitting a contribution, you agree that it is licensed under the same terms, and you confirm you have the right to submit it. Don't include code, artwork, figures, fonts or sounds you don't have the rights to share under the GPL.
+Trait Studio is licensed under the [GNU GPL, version 3 or later](LICENSE). By submitting a contribution, you agree that it is licensed under the same terms, and you confirm you have the right to submit it. Don't include code, artwork, figures, fonts or sounds you don't have the rights to share under the GPL.

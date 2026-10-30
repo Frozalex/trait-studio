@@ -1,8 +1,5 @@
-blank_issues_enabled: false
+blank_issues_enabled: true
 contact_links:
-  - name: Questions and help
-    url: https://discord.gg/WTssQKBaJp
-    about: Ask how to do something, or show what you made, on the StykAnimate Discord.
   - name: Security vulnerability
-    url: https://github.com/filippocalippo/StykAnimate-App/security/advisories/new
+    url: https://github.com/Frozalex/trait-studio/security/advisories/new
     about: Report security problems privately, never in a public issue.
