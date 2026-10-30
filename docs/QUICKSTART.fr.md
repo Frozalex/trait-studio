@@ -1,8 +1,20 @@
 # Premiers pas dans Trait Studio
 
+## Créer un personnage
+
+Ouvre **Atelier → Personnage** et pars du modèle Élan, Robot ou Triangle. Règle la taille, les bras, les jambes, le buste, la tête, les formes et les couleurs. Les points de l’aperçu indiquent les articulations.
+
+**Tester les articulations** ouvre un essai indépendant : déplace les points ou change leur angle, puis reviens à l’atelier. Ces essais ne modifient pas ta scène. **Insérer le personnage** ajoute une figure avec quatre contrôles IK ; **Insérer et retoucher les formes** ouvre le mode Construction pour modifier chaque segment ou polygone. Une seule annulation retire l’insertion complète.
+
+Le modèle choisi est partagé avec l’onglet Mouvements pendant la session. Après réouverture d’un projet, sélectionne un personnage créé avec cet outil et utilise **Reprendre le modèle sélectionné** pour retrouver ses proportions initiales. Les retouches manuelles effectuées ensuite ne sont pas reconstruites par ce bouton.
+
 ## Créer un mouvement
 
 Ouvre **Atelier → Mouvements**, choisis un cycle et règle sa durée en images. **Insérer le mouvement** ajoute un clip modifiable à la scène. Ouvre ce clip pour retoucher les poses avec les outils d’articulation. Pour partir d’un squelette sans animation, choisis **Ajouter un personnage**.
+
+Le bouton **Lire/Pause** et le curseur **Image du mouvement** permettent de vérifier les poses. La marche et la course proposent **Avancer dans la scène** : les pieds restent en place pendant leur appui. Ces déplacements se jouent une fois, pour éviter un retour brusque au début. Les cycles sur place bouclent ; le saut se joue une fois. Les longueurs des membres restent constantes, y compris avec des proportions personnalisées.
+
+Les mouvements utilisent les modèles paramétrés de l’atelier. Ils ne se transfèrent pas automatiquement à n’importe quel squelette importé. Chaque image est éditable dans le clip ; les proportions nouvelles s’appliquent aux nouvelles insertions.
 
 Une seconde à 24 images/s correspond à 24 images. Allonger l’exposition d’un clip en boucle le fait continuer ; cela ne crée pas automatiquement de nouvelles poses différentes. Les personnages déjà présents restent dans la scène : déplace ou supprime ceux dont tu n’as pas besoin.
 

@@ -1,7 +1,7 @@
 @layer features {
   .trait-workshop { container: trait-workshop / inline-size; }
   .trait-dialog.ui-dialog[data-size="lg"] { block-size: min(720px, calc(100dvh - 32px)); }
-  .trait-tabs { display: flex; gap: 8px; border-block-end: 1px solid var(--theme-border); padding-block-end: 12px; margin-block-end: 18px; }
+  .trait-tabs { display: flex; flex-wrap: wrap; gap: 8px; border-block-end: 1px solid var(--theme-border); padding-block-end: 12px; margin-block-end: 18px; }
   .trait-tabs :where([aria-selected="true"]) { background: var(--theme-selected); color: var(--theme-accent); }
   .trait-content { min-block-size: 370px; }
   .trait-motion-layout { display: grid; grid-template-columns: minmax(145px, .7fr) minmax(230px, 1.8fr); gap: 20px; }
@@ -13,7 +13,8 @@
   .trait-preview { display: block; inline-size: 100%; block-size: clamp(150px, 28dvh, 250px); object-fit: contain; border: 1px solid var(--theme-border); border-radius: 14px; background: var(--theme-subtle); }
   .trait-options { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; margin-block: 14px; }
   .trait-field { display: grid; gap: 6px; color: var(--theme-secondary); font-size: 12px; max-inline-size: 230px; }
-  .trait-field :where(input) { min-inline-size: 0; inline-size: 100%; block-size: 36px; }
+  .trait-field :where(input) { margin: 0; box-sizing: border-box; min-inline-size: 0; inline-size: 100%; block-size: 36px; }
+  .trait-field :where(input[type="checkbox"]) { inline-size: 18px; block-size: 18px; }
   .trait-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-block: 12px; }
   .trait-actions :where(button) { min-block-size: 36px; }
   .trait-swatches { display: flex; gap: 4px; }
@@ -41,7 +42,16 @@
   .trait-rename { display: flex; flex-wrap: wrap; align-items: end; gap: 8px; }
   .trait-film-rhythm { position: absolute; inset: auto 3px 3px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; border-radius: 3px; padding: 2px 4px; background: var(--theme-selected); color: var(--theme-accent); font-size: 10px; pointer-events: none; }
   .trait-film-rhythm[hidden] { display: none; }
+  .trait-character-layout { display: grid; grid-template-columns: minmax(220px, 1.2fr) minmax(200px, 1fr); gap: 20px; }
+  .trait-character-controls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; align-content: start; }
+  .trait-character-controls :where(.trait-field) { min-inline-size: 0; }
+  .trait-character-controls :where(output) { color: var(--theme-accent); font-variant-numeric: tabular-nums; }
+  .trait-field :where(select) { inline-size: 100%; min-inline-size: 0; block-size: 36px; }
+  .trait-transport { display: flex; align-items: center; gap: 10px; margin-block: 10px; }
+  .trait-transport :where(.trait-field) { flex: 1; max-inline-size: none; }
+  .trait-transport :where(output) { font-size: 12px; white-space: nowrap; font-variant-numeric: tabular-nums; }
   @container trait-workshop (inline-size < 510px) {
+    .trait-character-layout { grid-template-columns: minmax(0, 1fr); }
     .trait-motion-layout { grid-template-columns: minmax(0, 1fr); gap: 12px; }
     .trait-motion-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .trait-motion-card { min-block-size: 48px; }

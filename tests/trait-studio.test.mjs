@@ -10,7 +10,7 @@ const editor=()=>new Editor({demo:false,propertyChannels:true,layerTimeline:true
 test('all six original motions produce finite editable artwork and exact cycle lengths',()=>{
   for(const motion of MOTIONS)for(const frames of [8,23,60,600]){
     const report=createMotionDocument(motion.id,{frames,mirror:true}),rows=timeline(report);
-    assert.equal(rows.at(-1).start,frames);assert.equal(report.keyframes.length,9);
+    assert.equal(rows.at(-1).start,frames);assert.equal(report.keyframes.length,frames+1);
     const e=new Editor({demo:false});e.load(report);e.serialize();
     for(const [i,row] of rows.entries()){
       const geometry=buildGeometry(report,evaluatedFrame(report,i,0,row.start));

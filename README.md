@@ -8,8 +8,8 @@ Trait Studio est une version indépendante de [StykAnimate](https://github.com/f
 
 ## L’atelier Trait
 
-- **Six mouvements éditables** : course, marche, saut, salut, respiration et moonwalk. Choisis couleur, durée, souplesse et direction ; ouvre ensuite le clip pour retoucher chaque pose.
-- **Personnage Élan** : tête creuse, traits fins, membres courbes et quatre contrôles IK pour déplacer mains et pieds.
+- **Six mouvements éditables** : course, marche, saut, salut, respiration et moonwalk. Adapte-les aux proportions de ton personnage, avance image par image et choisis une marche ou une course sur place ou en déplacement.
+- **Créateur de personnages** : modèles Élan, Robot et Triangle, proportions réglables, têtes et bustes géométriques, couleurs et quatre contrôles IK. Teste les articulations avant insertion, puis retouche librement les formes.
 - **Bibliothèque de poses** : vignettes, recherche, renommage, application au même squelette, insertion et import/export JSON.
 - **Repères musicaux** : suggestion locale du tempo et de l’arrivée des basses, réglage manuel et repères visibles dans les timelines.
 - **Identité indépendante** : icône propre, palette verte, profil local séparé ; aucune télémétrie distante ni connexion au catalogue amont.

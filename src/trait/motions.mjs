@@ -1,84 +1,88 @@
-// Original Trait Studio choreography, GPL-3.0-or-later.
-// Poses are ordinary native lines/circles, editable with the existing tools.
+// Original Trait choreography compiled to editable native keyframes.
 import {emptyDocument, createObject, createFrame} from '../demo.mjs';
 import {movieclipFigure} from '../movieclips.mjs';
+import {characterAt,createCharacterDocument,dimensions,limb} from './character.mjs';
+export {COLORS} from './character.mjs';
 
 export const MOTIONS = Object.freeze([
-  {id:'run', name:'Course', subtitle:'Contact, poussée, suspension', loop:true},
-  {id:'walk', name:'Marche', subtitle:'Une foulée posée, huit poses', loop:true},
-  {id:'jump', name:'Saut', subtitle:'Anticipation et amorti', loop:false},
-  {id:'wave', name:'Salut', subtitle:'Un geste expressif', loop:true},
-  {id:'idle', name:'Respiration', subtitle:'Un personnage qui reste vivant', loop:true},
-  {id:'moonwalk', name:'Moonwalk', subtitle:'Glisse et transfert de poids', loop:true},
+  {id:'run',name:'Course',subtitle:'Poussée, suspension et réception',loop:true},
+  {id:'walk',name:'Marche',subtitle:'Appuis au sol et transfert du poids',loop:true},
+  {id:'jump',name:'Saut',subtitle:'Anticipation et amorti',loop:false},
+  {id:'wave',name:'Salut',subtitle:'Un geste expressif',loop:true},
+  {id:'idle',name:'Respiration',subtitle:'Un personnage qui reste vivant',loop:true},
+  {id:'moonwalk',name:'Moonwalk',subtitle:'Glisse et transfert de poids',loop:true},
 ]);
-export const COLORS = ['#53c7b5','#f2ac57','#91a8ff','#ed7ca5','#343c50'];
-const parents = [0,1,1,3,1,5,0,7,0,9];
-const names = ['Buste','Tête','Bras gauche','Avant-bras gauche','Bras droit','Avant-bras droit','Cuisse gauche','Jambe gauche','Cuisse droite','Jambe droite'];
-const RUN_FOOT = [[52,0],[25,0],[-6,0],[-38,0],[-58,-18],[-40,-57],[3,-70],[43,-29]];
-const RUN_KNEE = [[28,-58],[23,-51],[8,-55],[-11,-62],[-35,-70],[-18,-91],[25,-97],[46,-76]];
-const RUN_ELBOW = [[-20,-126],[-11,-118],[12,-120],[37,-133],[44,-140],[30,-138],[11,-134],[-9,-132]];
-const RUN_HAND = [[-4,-104],[20,-104],[44,-129],[57,-157],[51,-167],[30,-164],[11,-157],[-3,-133]];
-const lerp=(a,b,t)=>a+(b-a)*t;
-function sample(points,phase){const p=((phase%1)+1)%1*points.length,i=Math.floor(p),a=points[i],b=points[(i+1)%points.length];return a.map((v,n)=>lerp(v,b[n],p-i));}
-export function motionPoints(id,phase){
-  if(!MOTIONS.some(m=>m.id===id))throw new Error('Unknown motion.');
-  const p=((phase%1)+1)%1, s=Math.sin(p*Math.PI*2);
-  let hip=[0,-112],neck=[0,-166],el=[-27,-137],hl=[-34,-107],er=[27,-137],hr=[34,-107],kl=[-19,-58],fl=[-24,0],kr=[19,-58],fr=[24,0];
-  if(id==='run'){
-    hip=[8,-110-Math.sin(p*Math.PI*4)*4];neck=[26,hip[1]-48];
-    kl=sample(RUN_KNEE,p);fl=sample(RUN_FOOT,p);kr=sample(RUN_KNEE,p+.5);fr=sample(RUN_FOOT,p+.5);
-    el=sample(RUN_ELBOW,p);hl=sample(RUN_HAND,p);er=sample(RUN_ELBOW,p+.5);hr=sample(RUN_HAND,p+.5);
-  }else if(id==='walk'){
-    hip=[0,-112+Math.cos(p*Math.PI*4)*2];neck=[4,hip[1]-54];
-    const foot=q=>q<.5?[44-176*q,0]:[-44+176*(q-.5),-Math.sin((q-.5)*Math.PI*2)*24];
-    fl=foot(p);fr=foot((p+.5)%1);kl=[fl[0]*.4+8,-57+fl[1]*.35];kr=[fr[0]*.4+8,-57+fr[1]*.35];
-    el=[-s*17,-136];hl=[-s*35,-109];er=[s*17,-136];hr=[s*35,-109];
-  }else if(id==='jump'){
-    const crouch=Math.max(0,1-Math.abs(p-.15)/.15)*26+Math.max(0,1-Math.abs(p-.84)/.14)*19;
-    const lift=p>.25&&p<.75?Math.sin((p-.25)/.5*Math.PI)*93:0;
-    hip=[0,-112+crouch-lift];neck=[crouch*.22,hip[1]-54];
-    kl=[-23-crouch*.45,-58+crouch*.32-lift];kr=[23+crouch*.45,-58+crouch*.32-lift];fl=[-28,-lift];fr=[28,-lift];
-    const up=lift/93;el=[-30,neck[1]+30-up*55];er=[30,neck[1]+30-up*55];hl=[-45,neck[1]+60-up*110];hr=[45,neck[1]+60-up*110];
-  }else if(id==='wave'){
-    neck=[s*2,-166];er=[39,-174];hr=[48+s*16,-217];
-  }else if(id==='idle'){
-    neck=[0,-166-s*2];el[1]-=s;er[1]-=s;
-  }else if(id==='moonwalk'){
-    const foot=q=>q<.5?[35-140*q,0]:[-35+140*(q-.5),-Math.sin((q-.5)*Math.PI*2)*7];
-    hip=[-9,-109];neck=[-20,-162];fl=foot(p);fr=foot((p+.5)%1);kl=[fl[0]*.4-22,-55];kr=[fr[0]*.4-22,-55];
-    el=[-48,-140];hl=[-56,-114];er=[7,-137];hr=[12,-110];
+const TAU=Math.PI*2,cycle=p=>((p%1)+1)%1,smooth=t=>t*t*(3-2*t);
+function foot(phase,stance,span,lift) {
+  const p=cycle(phase);
+  if(p<=stance)return [span*(1-2*p/stance),0];
+  const t=(p-stance)/(1-stance);
+  // The swing matches the stance velocity at both contacts, avoiding a snap.
+  const slope=-(1-stance)/stance;
+  const x=span*(-1+2*smooth(t)+2*slope*(t*t*t*2-t*t*3+t));
+  return [x,-lift*Math.sin(Math.PI*t)**2];
+}
+export function motionPoints(id,phase,options={}) {
+  if(!MOTIONS.some(m=>m.id===id)||!Number.isFinite(phase))throw new Error('Mouvement invalide.');
+  const d=dimensions(options),p=cycle(phase),s=Math.sin(TAU*p),walk=id==='walk',run=id==='run';
+  let hip=[0,-d.leg*(.94+.006*s)],lean=.015*s,fl=[-d.leg*.22,0],fr=[d.leg*.22,0],leftSide=1,rightSide=-1;
+  let armLeft=[-d.arm*.36,d.arm*.88],armRight=[d.arm*.36,d.arm*.88],armAngles=null;
+  if(walk||run||id==='moonwalk') {
+    const stance=run?.38:walk?.6:.5,span=d.leg*(run?.36:walk?.28:.27),lift=d.leg*(run?.52:walk?.18:.06);
+    hip=[0,-d.leg*(run?.83-.05*Math.cos(2*TAU*(p-.19)):walk?.89+.025*Math.cos(2*TAU*(p-.3)):.90)];
+    lean=run?.23:walk?.055:-.14;fl=foot(p,stance,span,lift);fr=foot(p+.5,stance,span,lift);leftSide=rightSide=-1;
+    const swing=Math.cos(TAU*p)* (run?.85:.48);
+    armAngles=[-swing,swing,run?1.4:.16];
+  } else if(id==='jump') {
+    const t=Math.min(1,Math.max(0,phase));
+    const pulse=(a,b,c)=>t<a||t>c?0:t<=b?smooth((t-a)/(b-a)):1-smooth((t-b)/(c-b));
+    const crouch=.28*pulse(0,.18,.32)+.20*pulse(.69,.82,1);
+    const air=t>.30&&t<.73?Math.sin(Math.PI*(t-.30)/.43)**2:0,lift=air*d.leg*.90;
+    hip=[0,-d.leg*(.94-crouch)-lift];lean=crouch*.8;
+    fl=[-d.leg*.22,-lift];fr=[d.leg*.22,-lift];
+    const angle=.40+2.0*pulse(.18,.47,.86);
+    armLeft=[-Math.sin(angle)*d.arm*.92,Math.cos(angle)*d.arm*.92];armRight=[-armLeft[0],armLeft[1]];
+  } else if(id==='wave') {
+    armRight=[d.arm*(.61+.10*Math.sin(TAU*p*2)),-d.arm*(.58+.06*Math.cos(TAU*p*2))];
   }
-  return [hip,neck,[neck[0],neck[1]-38],el,hl,er,hr,kl,fl,kr,fr];
+  const neck=[hip[0]+Math.sin(lean)*d.torso,hip[1]-Math.cos(lean)*d.torso];
+  let [el,hl]=limb(neck,[neck[0]+armLeft[0],neck[1]+armLeft[1]],d.arm,1);
+  let [er,hr]=limb(neck,[neck[0]+armRight[0],neck[1]+armRight[1]],d.arm,-1);
+  if(armAngles) {
+    const chain=angle=>{const elbow=[neck[0]+Math.sin(angle)*d.arm/2,neck[1]+Math.cos(angle)*d.arm/2];return [elbow,[elbow[0]+Math.sin(angle+armAngles[2])*d.arm/2,elbow[1]+Math.cos(angle+armAngles[2])*d.arm/2]];};
+    [el,hl]=chain(armAngles[0]);[er,hr]=chain(armAngles[1]);
+  }
+  const [kl,leftFoot]=limb(hip,fl,d.leg,leftSide),[kr,rightFoot]=limb(hip,fr,d.leg,rightSide);
+  const points=[hip,neck,[neck[0]+Math.sin(lean)*d.head,neck[1]-Math.cos(lean)*d.head],el,hl,er,hr,kl,leftFoot,kr,rightFoot];
+  if(options.travel&&(walk||run)) {
+    const stride=2*d.leg*(run?.36:.28)/(run?.38:.6);
+    for(const point of points)point[0]+=stride*phase;
+  }
+  return points;
 }
-function rgb(hex){if(!/^#[0-9a-f]{6}$/i.test(hex))throw new Error('Choose a six-digit hex colour.');return [1,3,5].map(i=>parseInt(hex.slice(i,i+2),16));}
-export function figureAt(id='idle',phase=0,{color=COLORS[0],soft=true,mirror=false}={}){
-  const points=motionPoints(id,phase).map(([x,y])=>[mirror?-x:x,y]);
-  const hip=points[0],segments=parents.map((parent,i)=>{
-    const from=points[parent],to=points[i+1],head=i===1;
-    return {segment_id:i+1,parent_id:parent,name:names[i],length:Math.hypot(to[0]-from[0],to[1]-from[1]),angle_rad:Math.atan2(to[1]-from[1],to[0]-from[0]),thickness:head?6: i===0?7.5:6.5,bend_rad:soft&&!head?(i%2?-.07:.07)*(mirror?-1:1):0,primitive_code:head?1:0,aux_code:0,flags:head?1:0,segment_type:head?'circle':'line',segment_kind:head?'circle':'line',color_rgb:rgb(color),transparency:0,visible:true,z_order:i+1};
-  });
-  const figure={figure_type_id:1,name:'Trait · Élan',segment_count:10,segments,polyfills:[],image_assets:[],text_assets:[]};
-  return {figure,object:createObject(figure,1,hip[0],hip[1])};
+export function figureAt(id='idle',phase=0,options={}) {
+  return characterAt(motionPoints(id,phase,options),options,{mirror:options.mirror});
 }
-export function createFigureDocument(options={}){
-  const {figure,object}=figureAt('idle',0,options),report=emptyDocument();
-  report.figure_types=[figure];report.keyframes=[createFrame([object],1)];return report;
-}
-export function createMotionDocument(id,{frames=24,fps=24,...style}={}){
-  if(!Number.isInteger(frames)||frames<8||frames>600)throw new RangeError('A motion must contain 8–600 frames.');
-  if(!Number.isInteger(fps)||fps<1||fps>120)throw new RangeError('Choose a frame rate from 1 to 120.');
-  const report=emptyDocument(),first=figureAt(id,0,style),ticks=Array.from({length:9},(_,i)=>Math.round(i*frames/8));
-  report.fps=fps;report.figure_types=[first.figure];report._styk.name=MOTIONS.find(m=>m.id===id).name;
-  report.keyframes=ticks.map((tick,i)=>{
-    const {object,figure}=figureAt(id,i/8,style);
-    object.len_flag=1;object.lengths=figure.segments.map(s=>s.length);object.bend_flag=1;object.bends=figure.segments.map(s=>s.bend_rad);
-    return {...createFrame([object],i===8?1:ticks[i+1]-tick),_styk:{easing:{interpolation:'linear'}}};
+export const createFigureDocument=createCharacterDocument;
+export function createMotionDocument(id,{frames=24,fps=24,...style}={}) {
+  if(!Number.isInteger(frames)||frames<8||frames>600)throw new RangeError('Un mouvement doit contenir 8 à 600 images.');
+  if(!Number.isInteger(fps)||fps<1||fps>120)throw new RangeError('Choisis une cadence entre 1 et 120 images/s.');
+  const report=emptyDocument(),first=figureAt(id,0,style);let previous;
+  const motion=MOTIONS.find(m=>m.id===id),once=!motion.loop||(style.travel&&['walk','run'].includes(id));
+  report.fps=fps;report.figure_types=[first.figure];report._styk.name=motion.name;
+  // Bake each displayed frame: no changing bone lengths or interpolated foot drift.
+  report.keyframes=Array.from({length:frames+1},(_,tick)=>{
+    const {object}=figureAt(id,Math.min(1,tick/(once?frames-1:frames)),style);
+    if(previous)object.angles=object.angles.map((angle,i)=>angle+TAU*Math.round((previous[i]-angle)/TAU));
+    previous=object.angles;
+    return {...createFrame([object],1),_styk:{easing:{interpolation:'linear'}}};
   });return report;
 }
-export function createMotionAsset(id,options={}){
-  const document=createMotionDocument(id,options),duration=options.frames??24;
-  const figure=movieclipFigure(1,`Trait · ${document._styk.name}`,document,{duration,pivot:{x:0,y:-112}});
-  const result=emptyDocument();result.fps=document.fps;result.figure_types=[figure];result.keyframes=[createFrame([createObject(figure,1,0,0,{_stykMovieclip:{start:0,end:duration,offset:0,speed:1,mode:MOTIONS.find(m=>m.id===id).loop?'loop':'once'}})])];return result;
+export function createMotionAsset(id,options={}) {
+  const document=createMotionDocument(id,options),duration=options.frames??24,leg=dimensions(options).leg;
+  const figure=movieclipFigure(1,`Trait · ${document._styk.name}`,document,{duration,pivot:{x:0,y:-leg}});
+  const loop=MOTIONS.find(m=>m.id===id).loop&&!(options.travel&&['walk','run'].includes(id));
+  const result=emptyDocument();result.fps=document.fps;result.figure_types=[figure];result.keyframes=[createFrame([createObject(figure,1,0,0,{_stykMovieclip:{start:0,end:duration,offset:0,speed:1,mode:loop?'loop':'once'}})])];return result;
 }
 export function insertMotion(editor,id,options={}){
   const frames=options.frames??24,start=editor.tick;

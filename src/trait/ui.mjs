@@ -11,7 +11,7 @@ export const button = (text, fn, variant = 'outline') => {
 };
 export function field(label, value, type = 'number', attrs = {}) {
   const box = node('label', 'trait-field'), input = node('input', 'ui-input');
-  input.type = type; input.value = value; Object.assign(input, attrs);
+  input.type = type; Object.assign(input, attrs); input.value = value;
   box.append(node('span', null, label), input);
   return {box, input};
 }

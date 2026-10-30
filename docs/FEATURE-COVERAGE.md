@@ -4,9 +4,9 @@ Comparaison établie le 30 octobre 2026 à partir de la [fiche officielle Stick 
 
 | Usage | Trait Studio | Vérification ou limite |
 | --- | --- | --- |
-| Créer et articuler un stickman | Créateur de figures, nœuds, segments, IK, étirement et jointures | Modèle et tests natifs hérités ; personnage Élan original. |
+| Créer et articuler un stickman | Créateur de figures, nœuds, segments, IK, étirement et jointures | Modèle natif ; créateur paramétré Élan, Robot et Triangle, essai des articulations et insertion annulable. |
 | Animer image par image | Timeline simple, images clés, pelure d’oignon, annuler/rétablir | Tests des brouillons, de l’historique et de la timeline. |
-| Interpoler et organiser une scène | Timeline avancée, calques, courbes d’interpolation et clips réutilisables | Tests des pistes et clips ; six mouvements Trait éditables. |
+| Interpoler et organiser une scène | Timeline avancée, calques, courbes d’interpolation et clips réutilisables | Six mouvements adaptés aux proportions des modèles Trait ; longueur constante des membres et appuis fixes en déplacement. Pas de transfert automatique sur un squelette arbitraire. |
 | Utiliser formes, images et texte | Formes, dégradés, import d’images, texte et dessin | Modules natifs ; aucun contenu du catalogue propriétaire inclus. |
 | Caméra et effets | Caméra, zoom, mouvements et effets dont flou/lueur | Tests des caméras, effets et exports. |
 | Son | Pistes, montage, volume, mute/solo, fondus et export audio/vidéo | Mixeur local ; scénario de vérification MP4 de 90 secondes avec son. |
@@ -23,6 +23,6 @@ La cible est un studio d’animation libre utilisable sur ordinateur. La qualit�
 
 ## Vérification d’une version
 
-Une release bureau doit passer les tests unitaires, les parcours de l’atelier dans Chromium, la vérification du contenu empaqueté, un démarrage et un redémarrage réels, puis l’export et le décodage des vidéos. Windows ajoute l’installation silencieuse du programme généré et le contrôle de son contenu. La scène longue emploie un son synthétique ; aucune musique privée n’est publiée.
+Une release bureau doit passer les audits complets des dépendances npm et Python, le scan antivirus des distributions et de leurs contenus extraits, les tests unitaires, les parcours de l’atelier dans Chromium, la vérification du contenu empaqueté, un démarrage et un redémarrage réels, puis l’export et le décodage des vidéos. Windows ajoute l’installation silencieuse du programme généré et le contrôle de son contenu. La scène longue emploie un son synthétique ; aucune musique privée n’est publiée.
 
 Les captures en mode téléphone vérifient l’agencement dans Chromium. Elles ne certifient pas le fonctionnement sur un téléphone physique. Les essais automatisés sans GPU dédié ne remplacent pas une campagne sur plusieurs matériels.

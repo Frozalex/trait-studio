@@ -6,6 +6,15 @@ Trait Studio begins at version 1.3.0. Earlier releases and inherited development
 
 ## [Unreleased]
 
+### Added
+
+- Create geometric characters with adjustable proportions, colours and shapes, then try their joints before adding them to a scene.
+- Adapt the six motion presets to your character, inspect each pose, and make walking or running characters move forward with grounded foot contacts.
+
+### Fixed
+
+- Motion presets now preserve limb lengths and provide smoother cycle transitions and jump landings.
+
 ### Security
 
 - Updated desktop and installation components to address known security vulnerabilities.
