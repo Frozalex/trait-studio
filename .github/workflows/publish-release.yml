@@ -1,0 +1,47 @@
+name: Publish verified Trait release
+on:
+  workflow_dispatch:
+    inputs:
+      verified_run:
+        description: Successful Tests run for this exact commit (Windows and Linux)
+        required: true
+        type: string
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: publish-trait
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      GH_TOKEN: ${{ github.token }}
+      VERIFIED_RUN: ${{ inputs.verified_run }}
+      ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.11.0'
+          cache: npm
+      - name: Verify test provenance
+        run: node scripts/verify-release-run.mjs
+      - uses: actions/download-artifact@v4
+        with:
+          name: linux-appimage
+          path: verified
+          github-token: ${{ github.token }}
+          run-id: ${{ inputs.verified_run }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: windows-desktop
+          path: verified
+          github-token: ${{ github.token }}
+          run-id: ${{ inputs.verified_run }}
+      - name: Verify and publish exactly those artifacts
+        run: |
+          npm ci --no-audit --no-fund
+          npm run release:verify -- verified/release
+          node scripts/publish-release.mjs --directory=verified/release --publish

@@ -74,3 +74,10 @@ test('desktop pose storage persists across hosts and does not commit failed writ
   await Promise.all([restarted.add({...pose, id: 'second'}), restarted.add({...pose, id: 'third'})]);
   assert.equal(saved.poses.length, 3);
 });
+
+test('renaming a saved pose preserves its artwork and failed writes preserve its name',()=>{
+  const storage={getItem:()=>null,setItem:()=>{}},bank=new PoseBank(storage),pose=capturePose(editor(),'Contact');bank.add(pose);
+  bank.rename(pose.id,'Départ');assert.equal(bank.poses[0].name,'Départ');assert.equal(bank.poses[0].document,pose.document);
+  storage.setItem=()=>{throw new Error('full');};assert.throws(()=>bank.rename(pose.id,'Other'),/full/);assert.equal(bank.poses[0].name,'Départ');
+  assert.throws(()=>bank.rename(pose.id,'   '));
+});

@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import {execFileSync} from 'node:child_process';
+const gh=args=>JSON.parse(execFileSync('gh',args,{encoding:'utf8'}));
+const repo=process.env.GITHUB_REPOSITORY,sha=process.env.GITHUB_SHA,run=process.env.VERIFIED_RUN;
+assert.equal(repo,'Frozalex/trait-studio');assert.match(sha,/^[a-f0-9]{40}$/);assert.match(run,/^\d+$/);
+const candidate=gh(['api',`repos/${repo}/actions/runs/${run}`]);
+assert.equal(candidate.head_sha,sha);assert.equal(candidate.conclusion,'success');assert.equal(candidate.path,'.github/workflows/ci.yml');
+const jobs=gh(['api',`repos/${repo}/actions/runs/${run}/jobs?per_page=100`]).jobs;
+for(const name of ['Linux app','Windows app','Unit tests (windows-latest)','Unit tests (ubuntu-24.04)'])assert.ok(jobs.some(j=>j.name===name&&j.conclusion==='success'),`${name} was not verified`);
+const workshop=gh(['run','list','--repo',repo,'--workflow','trait-checks.yml','--commit',sha,'--json','databaseId,conclusion,headSha']);
+assert.ok(workshop.some(r=>r.conclusion==='success'&&r.headSha===sha),'Workshop browser checks have not passed for this commit');
+console.log(`Verified ${sha}: Windows/Linux packages, unit tests and workshop browser checks passed.`);

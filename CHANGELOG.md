@@ -6,6 +6,21 @@ Trait Studio begins at version 1.3.0. Earlier releases and inherited development
 
 ## [Unreleased]
 
+## [1.4.0]
+
+Music and poses
+
+### Added
+
+- Windows installers and portable downloads join the Linux AppImage distribution.
+- Rhythm suggestions identify a possible tempo and bass entry from your music, with manual adjustments before applying them.
+- Beat guides and named markers appear in both timelines to help align animation with sound.
+- Pose previews, search and renaming make saved poses easier to find and reuse.
+
+### Fixed
+
+- The Trait Workshop fits narrow screens without pushing its movement controls off-screen.
+
 ## [1.3.0]
 
 Trait Studio: motions, poses and rhythm

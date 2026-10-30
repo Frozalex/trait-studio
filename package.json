@@ -1,7 +1,7 @@
 {
   "name": "trait-studio",
   "productName": "Trait Studio",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "An open-source stick animation studio with editable motion presets, poses and rhythm guides.",
   "author": "Trait Studio contributors; original engine by StykAnimate contributors",
   "license": "GPL-3.0-or-later",
@@ -93,7 +93,7 @@
     "changelog:check": "node scripts/check-changelog.mjs",
     "release:verify": "node scripts/release-assets.mjs",
     "release:publish": "node scripts/publish-release.mjs",
-    "test:trait": "node --test tests/trait-studio.test.mjs",
+    "test:trait": "node --test tests/trait-*.test.mjs",
     "test:trait:browser": "node scripts/test-trait-browser.mjs"
   },
   "dependencies": {

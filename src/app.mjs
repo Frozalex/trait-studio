@@ -6680,7 +6680,7 @@ async function init() {
   window.styk.telemetry = telemetry;
   window.styk.privacyUI = privacyUI;
   updateNotice = new UpdateUI(desktop, { onRestart: () => actions['restart-update']() });
-  installTraitStudio({editor, actions, pause, finishEdit: finishCurrentEdit, fail, toast, overlays});
+  installTraitStudio({editor, actions, pause, finishEdit: finishCurrentEdit, fail, toast, overlays, audioEngine});
   // This independent fork does not request analytics consent or contact upstream services.
   void telemetryInit.then(() => telemetry.timing('startup_ms', performance.now()));
   // Prompts wait for the first rendered frame.

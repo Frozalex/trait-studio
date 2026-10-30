@@ -45,6 +45,7 @@ export class PoseBank{
   }
   save(next){const raw=JSON.stringify({version:1,poses:next});this.parse(raw);this.storage?.setItem(KEY,raw);this.poses=next;this.error=null;}
   add(pose){if(this.error)throw new Error('Exporte ou importe la bibliothèque avant d’ajouter une pose.');if(this.poses.length>=POSE_LIMIT)throw new Error('La bibliothèque contient déjà 48 poses.');return this.save([...this.poses,validatePose(pose)]);}
+  rename(id,name){const title=String(name).trim();if(!title||title.length>60)throw new Error('Choisis un nom entre 1 et 60 caractères.');if(!this.poses.some(p=>p.id===id))throw new Error('Pose introuvable.');return this.save(this.poses.map(p=>p.id===id?{...p,name:title}:p));}
   remove(id){return this.save(this.poses.filter(p=>p.id!==id));}
   export(){if(this.error)return this.raw;return JSON.stringify({version:1,poses:this.poses},null,2);}
   import(raw){const poses=this.parse(raw),ids=new Set(this.poses.map(p=>p.id));return this.save([...this.poses,...poses.filter(p=>!ids.has(p.id))]);}
@@ -65,6 +66,7 @@ export class DesktopPoseBank extends PoseBank {
     return pending;
   }
   add(pose) { return this.enqueue(() => super.add(pose)); }
+  rename(id, name) { return this.enqueue(() => super.rename(id, name)); }
   remove(id) { return this.enqueue(() => super.remove(id)); }
   import(raw) { return this.enqueue(() => super.import(raw)); }
   async save(next) {

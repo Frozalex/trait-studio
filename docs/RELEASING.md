@@ -36,7 +36,7 @@ The initial 0.5.5 section comes from existing release metadata, with overlapping
 
 ## Build and ship
 
-**Trait Studio:** the current distribution is Linux-only. Follow [BUILD-TRAIT.md](BUILD-TRAIT.md) and the Linux job in `.github/workflows/ci.yml`. Automatic updates and the upstream coordinated publishing workflow are disabled. Publish only the exact CI artifact that passed package, launch, restart and video checks, with matching source and checksums. The Windows/site procedure below is retained as historical upstream guidance and is not the Trait Studio release process.
+**Trait Studio:** `.github/workflows/ci.yml` builds and verifies Windows and Linux from the same commit. The workshop browser checks run in `trait-checks.yml`. Both must succeed before dispatching `publish-release.yml` at that exact commit with its successful Tests run ID. That workflow checks provenance, downloads the tested artifacts, verifies feeds and hashes, uploads only the binary allowlist and publishes after GitHub SHA-256 digests match. It never rebuilds binaries for publication. The tag must resolve to the verified source commit. Automatic updates remain disabled; upgrades are downloaded manually from GitHub. See [BUILD-TRAIT.md](BUILD-TRAIT.md). The procedure below is historical upstream guidance.
 
 Use `.github/workflows/desktop-release.yml` for the current runtime pins and coordinated Windows, Linux and browser verification. `docs/UPDATES.md` covers updates and public assets; `docs/DESKTOP-RELEASE.md` covers package verification and the local launcher marker. A feature implementation request does not imply publication authorization. An explicit release request authorizes its normal shipping steps; do not ask again without a concrete new blocker.
 

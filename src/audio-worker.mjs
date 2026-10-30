@@ -1,10 +1,11 @@
 import {errorMessageData, messageError} from './localized-error.mjs';
 
 import {inspectWave, wavePeaks, mixAudio, pcmWave} from './audio-pcm.mjs';
+import {analyzeMix} from './trait/audio-analysis.mjs';
 import {AUDIO_CHUNK_BYTES} from './audio-model.mjs';
 const sources = new Map(), embedded = new Map();
 let clips = [];
-let activeImport, cancelledImport;
+let activeImport, cancelledImport, cancelledAnalysis = 0;
 const encode = bytes => { let text = ''; for (let i = 0; i < bytes.length; i += 8192) text += String.fromCharCode(...bytes.subarray(i, i + 8192)); return btoa(text); };
 const decode = value => Uint8Array.from(atob(value), c => c.charCodeAt(0));
 async function run(data) {
@@ -23,12 +24,14 @@ async function run(data) {
   if (data.operation === 'embedded-chunk') { embedded.get(data.key).push(new Blob([decode(data.chunk.data_base64)])); return true; }
   if (data.operation === 'embedded-end') { const blob = new Blob(embedded.get(data.key)); embedded.delete(data.key); return blob; }
   if (data.operation === 'clips') { clips = data.clips; return true; }
+  if (data.operation === 'analyze-rhythm') return analyzeMix((start, frames) => mixAudio(data.clips, sources, start, frames), data.duration, {isCancelled: () => data.id <= cancelledAnalysis});
   if (data.operation === 'mix') return mixAudio(clips, sources, data.start, data.frames);
   throw messageError(new Error(''), "errors.audioWorker.unknownAudioWorkerOperation", {});
 }
 // Requests are ordered. A source release cannot race an in-flight mix.
 let queue = Promise.resolve();
 self.addEventListener('message', ({data}) => {
+  if(data.operation==='cancel-analysis'){cancelledAnalysis=Math.max(cancelledAnalysis,data.requestId);return;}
   if(data.operation==='cancel-import'){if(activeImport===data.key)cancelledImport=data.key;return;}
   queue = queue.then(async () => {
     try { const result = await run(data); self.postMessage({id: data.id, result}, result instanceof Float32Array ? [result.buffer] : []); }

@@ -1,3 +1,4 @@
+import {visibleRhythm} from './trait/timeline-rhythm.mjs';
 import {messageTuple, translatedElement, localizedText, localizedAttribute, localizedMarkup} from './localization-bindings.mjs';
 
 import {messageError} from './localized-error.mjs';
@@ -436,6 +437,7 @@ export class SheetFilmstrip {
         localizedAttribute(preview, 'aria-label', 'filmstrip.card', {frame: index + 1});
         const canvas = el('canvas', preview);
         canvas.width = 320; canvas.height = 192;
+        const rhythm = el('span', preview, 'trait-film-rhythm');rhythm.hidden=true;
         const number = el('span', card, 'sheet-frame-number ui-frame-num', String(index + 1));
         const count = el('span', number, 'ui-frame-count');
         // The bar's range input carries the value for the keyboard and assistive technology; a pointer drags the
@@ -450,9 +452,15 @@ export class SheetFilmstrip {
         listen(preview, 'click', event => this.selectFrame(index, {extend: event.shiftKey}));
         listen(preview, 'dblclick', () => this._run(() => this.showEasingPopover()));
         listen(card, 'contextmenu', event => { event.preventDefault(); if (!this.selected.has(index)) this.selectFrame(index); this._menu(event); });
-        Object.assign(card, {_button: preview, _canvas: canvas, _slider: slider, _count: count, _hold: hold, _number: number});
+        Object.assign(card, {_button: preview, _canvas: canvas, _slider: slider, _count: count, _hold: hold, _number: number, _rhythm: rhythm});
         this.cards.set(index, card);
       }
+      const rangeStart=this.times[index],rangeEnd=(this.times[index+1]??this.editor.totalTicks)-1;
+      const rhythm=visibleRhythm(this.editor.report,{first:rangeStart,last:rangeEnd,pixelsPerTick:this.cardWidth/Math.max(1,rangeEnd-rangeStart+1)});
+      const firstBeat=rhythm.beats[0],marker=rhythm.markers[0];
+      card._rhythm.hidden=!marker&&!firstBeat;
+      card._rhythm.textContent=marker?marker.label:firstBeat?`♪ ${Math.floor(firstBeat.index/this.editor.report._styk.traitRhythm.beatsPerBar)+1}.${firstBeat.index%this.editor.report._styk.traitRhythm.beatsPerBar+1}`:'';
+      card._button.title=rhythm.markers.map(m=>`${m.label} · ${m.tick+1}`).join(' / ');
       const current = active === index, selected = this.selected.has(index);
       card.dataset.current = String(current);
       card.dataset.selected = String(selected);

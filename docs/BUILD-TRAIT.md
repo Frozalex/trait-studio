@@ -32,3 +32,9 @@ Le résultat se trouve dans `release/`. Le paquet inclut le codec Python compil�
 Les scripts amont et les configurations Electron pour Windows et macOS restent présents. Ils nécessitent une construction native et leurs propres vérifications. La disponibilité de ces scripts ne constitue pas une validation de leurs installateurs pour Trait Studio.
 
 Les anciens workflows de publication amont sont conservés dans `docs/upstream-workflows/` à titre de référence ; ils ne publient rien. Les mises à jour automatiques sont désactivées. Toute distribution de ce fork doit garder la licence GPL, les mentions tierces et l’accès aux sources correspondantes.
+
+## Distribution Windows et Linux à partir de 1.4
+
+Le workflow `ci.yml` construit les deux plateformes avec Node 24.11.0 et Python 3.12.9. Il valide les fichiers empaquetés, le démarrage, la persistance des poses au redémarrage et les exports vidéo. Le cas long produit un MP4 de 90 secondes avec du mouvement et un son synthétique, puis décode les images et le son. Windows ajoute la construction VFW et l’installation du Setup généré dans un dossier temporaire ; le programme installé est comparé au paquet puis démarré.
+
+Les artefacts `linux-appimage` et `windows-desktop` contiennent les exécutables et leurs preuves. Après succès des tests et de `trait-checks.yml` sur le même commit, déclencher `publish-release.yml` avec le numéro du run Tests. La publication vérifie la provenance du code et les empreintes du contenu reçu par GitHub. Les mises à jour sont manuelles. Les exécutables Windows ne sont pas signés.

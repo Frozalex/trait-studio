@@ -1,31 +1,17 @@
-# StykAnimate 1.3.0
+# StykAnimate 1.4.0
 
-Trait Studio: motions, poses and rhythm
+Music and poses
 
 ### Added
 
-- Trait Workshop adds six editable motion clips with direction, color and duration controls.
-- Save, reuse and exchange a personal library of poses while preserving the character’s position.
-- Rhythm guides provide tap tempo, an intro offset and named markers saved with the project.
-- StykAnimate is now open source: its code is on GitHub under the GPL-3.0 license.
-- Everyday Props · Pivot 3D: 30 editable everyday objects with working hinges and wheels for your animations.
-- Vehicles · Pivot 3D asset pack with twelve editable vehicles, spinning wheels, steering and opening parts.
-- Named poses for articulated figures, with detailed controls that can be shown when needed.
-- Change individual colors on 3D figures from the Colors palette.
-- Keep several projects open at once in tabs, each with its own undo history, and switch between them with a click or Ctrl+Tab.
-- A new Home page to start an animation in landscape, vertical or square, reopen your projects and organize them with pins and folders.
-- Five short interactive tutorials that guide you step by step through the canvas, posing, the timeline and the panels.
-- Right-click a joint and choose Disconnect segment to turn that part of a figure into a figure of its own.
-
-### Changed
-
-- Trait Studio has its own identity and GitHub releases, with local libraries and no connection to upstream analytics services.
-- Ctrl-dragging a node that uses IK stretches it like any other node.
-- A calmer top bar: the menus are in the StykAnimate menu, and your open projects take their place.
+- Windows installers and portable downloads join the Linux AppImage distribution.
+- Rhythm suggestions identify a possible tempo and bass entry from your music, with manual adjustments before applying them.
+- Beat guides and named markers appear in both timelines to help align animation with sound.
+- Pose previews, search and renaming make saved poses easier to find and reuse.
 
 ### Fixed
 
-- Fixed an error when deleting your last color palette.
+- The Trait Workshop fits narrow screens without pushing its movement controls off-screen.
 
 Free to create. Powered by your support.
 

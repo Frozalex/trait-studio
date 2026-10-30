@@ -1,6 +1,7 @@
 // Rhythm metadata belongs to the document and is restored by its own small history command.
 export function validateRhythm(value){
   if(!value||value.version!==1||!Number.isFinite(value.bpm)||value.bpm<20||value.bpm>300||!Number.isFinite(value.offset)||value.offset<0||value.offset>36000||!Number.isInteger(value.beatsPerBar)||value.beatsPerBar<1||value.beatsPerBar>12||!Array.isArray(value.markers)||value.markers.length>256)throw new Error('Réglages de rythme invalides.');
+  if(value.visible!==undefined&&typeof value.visible!=='boolean')throw new Error('Visibilité du rythme invalide.');
   for(const m of value.markers)if(!Number.isInteger(m.tick)||m.tick<0||m.tick>10000000||typeof m.label!=='string'||m.label.length>60)throw new Error('Repère invalide.');
   return value;
 }

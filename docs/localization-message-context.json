@@ -7572,7 +7572,7 @@
   },
   "common.shortcutHint": {
     "locations": [
-      "src/layer-timeline.mjs:87"
+      "src/layer-timeline.mjs:88"
     ],
     "context": "localizedAttribute(this.findButton,'aria-label','timeline.findLayers');localizedAttribute(this.findButton,'data-tooltip','common.shortcutHint',{label:{messageKe"
   },
@@ -12264,7 +12264,7 @@
   },
   "errors.audioEngine.audioPreparationFellBehindPlaybackPausedTryAgain": {
     "locations": [
-      "src/audio-engine.mjs:136"
+      "src/audio-engine.mjs:150"
     ],
     "context": "if (clock < this.context.currentTime) { this.stop(); this.onError(messageError(new Error(''), \"errors.audioEngine.audioPreparationFellBehindPlaybackPausedTryAga"
   },
@@ -12475,7 +12475,7 @@
   },
   "errors.audioWorker.unknownAudioWorkerOperation": {
     "locations": [
-      "src/audio-worker.mjs:27"
+      "src/audio-worker.mjs:29"
     ],
     "context": "throw messageError(new Error(''), \"errors.audioWorker.unknownAudioWorkerOperation\", {});"
   },
@@ -18897,19 +18897,19 @@
   },
   "errors.layerTimeline.chooseAValidFrame": {
     "locations": [
-      "src/layer-timeline.mjs:706"
+      "src/layer-timeline.mjs:709"
     ],
     "context": "seek(tick){if(!Number.isInteger(tick)||tick<0)throw messageError(new Error(''), \"errors.layerTimeline.chooseAValidFrame\", {});this.onSeek?.();this.start=this.en"
   },
   "errors.layerTimeline.chooseDestinationLayersInsideTheTimeline": {
     "locations": [
-      "src/layer-timeline.mjs:695"
+      "src/layer-timeline.mjs:698"
     ],
     "context": "if(destinations.some(id=>!id))throw messageError(new Error(''), \"errors.layerTimeline.chooseDestinationLayersInsideTheTimeline\", {});"
   },
   "errors.layerTimeline.pasteTheCopiedFiguresOnTheCanvas": {
     "locations": [
-      "src/layer-timeline.mjs:731",
+      "src/layer-timeline.mjs:734",
       "src/shared-clipboard.mjs:110"
     ],
     "context": "pasteSelection(){const ids=this.ids,start=this.start,operation=kind=>{if(kind==='camera-motion'){const id=this.editor.pasteCameraMotion(Math.floor(this.editor.t"
@@ -21351,7 +21351,7 @@
   },
   "errors.sheetFilmstrip.inbetweensMustBe065534": {
     "locations": [
-      "src/sheet-filmstrip.mjs:264"
+      "src/sheet-filmstrip.mjs:265"
     ],
     "context": "if (typeof inbetweens !== 'function' && !valid(inbetweens)) throw messageError(new Error(''), \"errors.sheetFilmstrip.inbetweensMustBe065534\", {});"
   },
@@ -25135,179 +25135,179 @@
       "src/app.mjs:1304",
       "src/export-sheet.mjs:494",
       "src/inspector-view.mjs:282",
-      "src/layer-timeline.mjs:777",
-      "src/sheet-filmstrip.mjs:436"
+      "src/layer-timeline.mjs:780",
+      "src/sheet-filmstrip.mjs:437"
     ],
     "context": "const frame = {messageKey:hover.tick===editor.tick?'exportSheet.currentFrame':'filmstrip.card',messageParams:{frame:hover.tick+1}};"
   },
   "filmstrip.cardTip": {
     "locations": [
-      "src/sheet-filmstrip.mjs:337"
+      "src/sheet-filmstrip.mjs:338"
     ],
     "context": "card._button.dataset.tooltip = this.say('filmstrip.cardTip', {frame: index + 1, count: words});"
   },
   "filmstrip.copy": {
     "locations": [
-      "src/sheet-filmstrip.mjs:182"
+      "src/sheet-filmstrip.mjs:183"
     ],
     "context": "this.copyButton = this.button(actions, say(\"filmstrip.copyName\"), () => this.copySelection(), {text: say(\"filmstrip.copy\"), textKey: \"filmstrip.copy\", textParam"
   },
   "filmstrip.copyName": {
     "locations": [
-      "src/sheet-filmstrip.mjs:182"
+      "src/sheet-filmstrip.mjs:183"
     ],
     "context": "this.copyButton = this.button(actions, say(\"filmstrip.copyName\"), () => this.copySelection(), {text: say(\"filmstrip.copy\"), textKey: \"filmstrip.copy\", textParam"
   },
   "filmstrip.count": {
     "locations": [
-      "src/sheet-filmstrip.mjs:332"
+      "src/sheet-filmstrip.mjs:333"
     ],
     "context": "const words = amount === 1 ? this.say('filmstrip.countOne') : this.say('filmstrip.count', {count: amount});"
   },
   "filmstrip.countOne": {
     "locations": [
-      "src/sheet-filmstrip.mjs:332"
+      "src/sheet-filmstrip.mjs:333"
     ],
     "context": "const words = amount === 1 ? this.say('filmstrip.countOne') : this.say('filmstrip.count', {count: amount});"
   },
   "filmstrip.deleteName": {
     "locations": [
-      "src/sheet-filmstrip.mjs:184"
+      "src/sheet-filmstrip.mjs:185"
     ],
     "context": "this.deleteButton = this.button(actions, say(\"filmstrip.deleteName\"), () => this.action('delete'), {glyph: 'trash', command: 'delete'});"
   },
   "filmstrip.easing": {
     "locations": [
-      "src/sheet-filmstrip.mjs:165"
+      "src/sheet-filmstrip.mjs:166"
     ],
     "context": "translatedElement(el('span', easing, 'ui-field-label', say(\"filmstrip.easing\")), \"filmstrip.easing\", {});"
   },
   "filmstrip.easingName": {
     "locations": [
-      "src/sheet-filmstrip.mjs:167"
+      "src/sheet-filmstrip.mjs:168"
     ],
     "context": "localizedAttribute(this.easingSelect, 'aria-label', \"filmstrip.easingName\", {});"
   },
   "filmstrip.edited": {
     "locations": [
-      "src/sheet-filmstrip.mjs:465"
+      "src/sheet-filmstrip.mjs:473"
     ],
     "context": "if (dot) localizedAttribute(card._number, 'data-tooltip', \"filmstrip.edited\", {}); else delete card._number.dataset.tooltip;"
   },
   "filmstrip.fewer": {
     "locations": [
-      "src/sheet-filmstrip.mjs:156"
+      "src/sheet-filmstrip.mjs:157"
     ],
     "context": "this.fewerButton = this.button(stepper, say(\"filmstrip.fewer\"), () => this.stepDuration(-1), {glyph: 'minus'});"
   },
   "filmstrip.frameBar": {
     "locations": [
-      "src/sheet-filmstrip.mjs:145",
-      "src/sheet-filmstrip.mjs:181"
+      "src/sheet-filmstrip.mjs:146",
+      "src/sheet-filmstrip.mjs:182"
     ],
     "context": "localizedAttribute(bar, 'aria-label', \"filmstrip.frameBar\", {});"
   },
   "filmstrip.frameOf": {
     "locations": [
-      "src/sheet-filmstrip.mjs:350"
+      "src/sheet-filmstrip.mjs:351"
     ],
     "context": "messageTuple([this.counterFrame, say(\"filmstrip.frameOf\", {frame: active + 1, total: this.times.length})], {1: {key: \"filmstrip.frameOf\", params: {frame: active"
   },
   "filmstrip.holdName": {
     "locations": [
-      "src/sheet-filmstrip.mjs:446"
+      "src/sheet-filmstrip.mjs:448"
     ],
     "context": "localizedAttribute(slider, 'aria-label', 'filmstrip.holdName', {frame: index + 1});"
   },
   "filmstrip.holds": {
     "locations": [
-      "src/sheet-filmstrip.mjs:351"
+      "src/sheet-filmstrip.mjs:352"
     ],
     "context": "messageTuple([this.counterHold, say(\"filmstrip.holds\", {seconds: seconds(hold)})], {1: {key: \"filmstrip.holds\", params: {seconds: seconds(hold)}}}),"
   },
   "filmstrip.holdTip": {
     "locations": [
-      "src/sheet-filmstrip.mjs:338"
+      "src/sheet-filmstrip.mjs:339"
     ],
     "context": "card._hold.dataset.tooltip = this.say('filmstrip.holdTip', {frame: index + 1, count: words});"
   },
   "filmstrip.inbetweens": {
     "locations": [
-      "src/sheet-filmstrip.mjs:153"
+      "src/sheet-filmstrip.mjs:154"
     ],
     "context": "translatedElement(el('span', row, 'ui-row-label', say(\"filmstrip.inbetweens\")), \"filmstrip.inbetweens\", {}).setAttribute('aria-hidden', 'true');"
   },
   "filmstrip.inbetweensName": {
     "locations": [
-      "src/sheet-filmstrip.mjs:159"
+      "src/sheet-filmstrip.mjs:160"
     ],
     "context": "localizedAttribute(this.duration, 'aria-label', \"filmstrip.inbetweensName\", {});"
   },
   "filmstrip.layer": {
     "locations": [
-      "src/sheet-filmstrip.mjs:209"
+      "src/sheet-filmstrip.mjs:210"
     ],
     "context": "localizedText(layer.querySelector('.ui-label'), \"filmstrip.layer\", {});"
   },
   "filmstrip.layerTip": {
     "locations": [
-      "src/sheet-filmstrip.mjs:207"
+      "src/sheet-filmstrip.mjs:208"
     ],
     "context": "localizedAttribute(layer, 'data-tooltip', \"filmstrip.layerTip\", {});"
   },
   "filmstrip.mixed": {
     "locations": [
-      "src/sheet-filmstrip.mjs:168",
-      "src/sheet-filmstrip.mjs:360"
+      "src/sheet-filmstrip.mjs:169",
+      "src/sheet-filmstrip.mjs:361"
     ],
     "context": "this.mixedOption = translatedElement(el('option', this.easingSelect, '', say(\"filmstrip.mixed\")), \"filmstrip.mixed\", {});"
   },
   "filmstrip.more": {
     "locations": [
-      "src/sheet-filmstrip.mjs:160"
+      "src/sheet-filmstrip.mjs:161"
     ],
     "context": "this.moreButton = this.button(stepper, say(\"filmstrip.more\"), () => this.stepDuration(1), {glyph: 'plus'});"
   },
   "filmstrip.paste": {
     "locations": [
-      "src/sheet-filmstrip.mjs:183"
+      "src/sheet-filmstrip.mjs:184"
     ],
     "context": "this.pasteButton = this.button(actions, say(\"filmstrip.pasteName\"), () => this.pasteSelection(), {text: say(\"filmstrip.paste\"), textKey: \"filmstrip.paste\", text"
   },
   "filmstrip.pasteName": {
     "locations": [
-      "src/sheet-filmstrip.mjs:183"
+      "src/sheet-filmstrip.mjs:184"
     ],
     "context": "this.pasteButton = this.button(actions, say(\"filmstrip.pasteName\"), () => this.pasteSelection(), {text: say(\"filmstrip.paste\"), textKey: \"filmstrip.paste\", text"
   },
   "filmstrip.together": {
     "locations": [
-      "src/sheet-filmstrip.mjs:189"
+      "src/sheet-filmstrip.mjs:190"
     ],
     "context": "translatedElement(el('span', together, 'ui-field-label', say(\"filmstrip.together\")), \"filmstrip.together\", {});"
   },
   "filmstrip.togetherReason": {
     "locations": [
-      "src/sheet-filmstrip.mjs:194",
-      "src/sheet-filmstrip.mjs:223"
+      "src/sheet-filmstrip.mjs:195",
+      "src/sheet-filmstrip.mjs:224"
     ],
     "context": "localizedAttribute(together, 'data-tooltip', \"filmstrip.togetherReason\", {});"
   },
   "filmstrip.togetherTip": {
     "locations": [
-      "src/sheet-filmstrip.mjs:223"
+      "src/sheet-filmstrip.mjs:224"
     ],
     "context": "const tip = this.say(ready ? 'filmstrip.togetherTip' : 'filmstrip.togetherReason');"
   },
   "filmstrip.total": {
     "locations": [
-      "src/sheet-filmstrip.mjs:352"
+      "src/sheet-filmstrip.mjs:353"
     ],
     "context": "messageTuple([this.counterPlayback, say(\"filmstrip.total\", {seconds: seconds(total)})], {1: {key: \"filmstrip.total\", params: {seconds: seconds(total)}}}),"
   },
   "filmstrip.totalTip": {
     "locations": [
-      "src/sheet-filmstrip.mjs:355"
+      "src/sheet-filmstrip.mjs:356"
     ],
     "context": "const totalTip = say(\"filmstrip.totalTip\", {seconds: seconds(total), ticks: total, fps: Number(fps.toFixed(2))});"
   },
@@ -28225,8 +28225,8 @@
   },
   "layerFilter.title": {
     "locations": [
-      "src/layer-timeline.mjs:81",
-      "src/layer-timeline.mjs:85",
+      "src/layer-timeline.mjs:82",
+      "src/layer-timeline.mjs:86",
       "src/timeline-layer-filter.mjs:32",
       "src/timeline-layers-popover.mjs:73",
       "src/timeline-organization.mjs:84"
@@ -28235,7 +28235,7 @@
   },
   "layerFolders.collapse": {
     "locations": [
-      "src/layer-timeline.mjs:516",
+      "src/layer-timeline.mjs:518",
       "src/timeline-layer-folders.mjs:37",
       "src/timeline-layers-popover.mjs:132"
     ],
@@ -28243,7 +28243,7 @@
   },
   "layerFolders.expand": {
     "locations": [
-      "src/layer-timeline.mjs:516",
+      "src/layer-timeline.mjs:518",
       "src/timeline-layer-folders.mjs:37",
       "src/timeline-layers-popover.mjs:132"
     ],
@@ -28251,7 +28251,7 @@
   },
   "layerFolders.group": {
     "locations": [
-      "src/layer-timeline.mjs:80",
+      "src/layer-timeline.mjs:81",
       "src/timeline-layer-folders.mjs:27",
       "src/timeline-layers-popover.mjs:72"
     ],
@@ -28265,7 +28265,7 @@
   },
   "layerFolders.newFolder": {
     "locations": [
-      "src/layer-timeline.mjs:80",
+      "src/layer-timeline.mjs:81",
       "src/timeline-layer-folders.mjs:16",
       "src/timeline-layer-folders.mjs:26",
       "src/timeline-layers-popover.mjs:69",
@@ -28361,49 +28361,49 @@
   },
   "layerTimeline.addFrame": {
     "locations": [
-      "src/layer-timeline.mjs:778"
+      "src/layer-timeline.mjs:781"
     ],
     "context": "!locked&&{label:interfaceText(\"layerTimeline.addFrame\"), labelKey: \"layerTimeline.addFrame\",shortcut:this.shortcut('add-frame'),symbol:'plus',action:()=>this.ad"
   },
   "layerTimeline.bakeClipRange": {
     "locations": [
-      "src/layer-timeline.mjs:765"
+      "src/layer-timeline.mjs:768"
     ],
     "context": "!locked&&motion.enabled&&{label:interfaceText(\"layerTimeline.bakeClipRange\"), labelKey: \"layerTimeline.bakeClipRange\",symbol:'diamond',action:()=>editor.bakeCam"
   },
   "layerTimeline.blankDrawingHere": {
     "locations": [
-      "src/layer-timeline.mjs:782"
+      "src/layer-timeline.mjs:785"
     ],
     "context": "selected?.drawing&&!locked&&{label:interfaceText(\"layerTimeline.blankDrawingHere\"), labelKey: \"layerTimeline.blankDrawingHere\",shortcut:this.shortcut('insert-bl"
   },
   "layerTimeline.camera": {
     "locations": [
-      "src/layer-timeline.mjs:517"
+      "src/layer-timeline.mjs:519"
     ],
     "context": "const name = layer.kind === 'camera' ? {messageKey: 'layerTimeline.camera'} : layer.kind === 'scene' ? {messageKey: 'layerTimeline.scene'} : layer.kind === 'mot"
   },
   "layerTimeline.cameraMotions": {
     "locations": [
-      "src/layer-timeline.mjs:516"
+      "src/layer-timeline.mjs:518"
     ],
     "context": "node._disclosure.setAttribute('aria-expanded',String(layer.kind==='folder'?!layer.collapsed:!this.cameraMotionsCollapsed));localizedAttribute(node._disclosure, "
   },
   "layerTimeline.changeEasing": {
     "locations": [
-      "src/layer-timeline.mjs:779"
+      "src/layer-timeline.mjs:782"
     ],
     "context": "!selected?.drawing&&!locked&&this.ids.length>0&&{label:interfaceText(\"layerTimeline.changeEasing\"), labelKey: \"layerTimeline.changeEasing\",symbol:'sliders',acti"
   },
   "layerTimeline.changeEasing2": {
     "locations": [
-      "src/layer-timeline.mjs:602"
+      "src/layer-timeline.mjs:604"
     ],
     "context": "applyEasing(selection,easing){return this.editor.movieclipBatch(interfaceText(\"layerTimeline.changeEasing2\"),()=>{for(const {id,start,end} of selection)this.edi"
   },
   "layerTimeline.collapse": {
     "locations": [
-      "src/layer-timeline.mjs:516"
+      "src/layer-timeline.mjs:518"
     ],
     "context": "node._disclosure.setAttribute('aria-expanded',String(layer.kind==='folder'?!layer.collapsed:!this.cameraMotionsCollapsed));localizedAttribute(node._disclosure, "
   },
@@ -28445,19 +28445,19 @@
   },
   "layerTimeline.copyDrawingHere": {
     "locations": [
-      "src/layer-timeline.mjs:783"
+      "src/layer-timeline.mjs:786"
     ],
     "context": "selected?.drawing&&!locked&&{label:interfaceText(\"layerTimeline.copyDrawingHere\"), labelKey: \"layerTimeline.copyDrawingHere\",shortcut:this.shortcut('insert-copi"
   },
   "layerTimeline.copyFrames": {
     "locations": [
-      "src/layer-timeline.mjs:784"
+      "src/layer-timeline.mjs:787"
     ],
     "context": "[hasFrames&&!locked&&{label:interfaceText(\"layerTimeline.copyFrames\"), labelKey: \"layerTimeline.copyFrames\",shortcut:this.shortcut('copy'),symbol:'duplicate',ac"
   },
   "layerTimeline.cutFrames": {
     "locations": [
-      "src/layer-timeline.mjs:785"
+      "src/layer-timeline.mjs:788"
     ],
     "context": "hasFrames&&!locked&&{label:interfaceText(\"layerTimeline.cutFrames\"), labelKey: \"layerTimeline.cutFrames\",shortcut:this.shortcut('cut'),symbol:'cut',action:()=>t"
   },
@@ -28469,80 +28469,80 @@
   },
   "layerTimeline.deleteMotion": {
     "locations": [
-      "src/layer-timeline.mjs:767"
+      "src/layer-timeline.mjs:770"
     ],
     "context": "],[!locked&&{label:interfaceText(\"layerTimeline.deleteMotion\"), labelKey: \"layerTimeline.deleteMotion\",symbol:'trash',danger:true,action:()=>editor.deleteCamera"
   },
   "layerTimeline.deleteSelectedKeys": {
     "locations": [
-      "src/layer-timeline.mjs:787"
+      "src/layer-timeline.mjs:790"
     ],
     "context": "[hasKey&&!locked&&{label:interfaceText(\"layerTimeline.deleteSelectedKeys\"), labelKey: \"layerTimeline.deleteSelectedKeys\",shortcut:this.shortcut('delete'),symbol"
   },
   "layerTimeline.drawing": {
     "locations": [
-      "src/layer-timeline.mjs:781"
+      "src/layer-timeline.mjs:784"
     ],
     "context": "[selected?.drawing&&!locked&&{heading:interfaceText(\"layerTimeline.drawing\"),headingKey:'layerTimeline.drawing'},"
   },
   "layerTimeline.drawingLayer": {
     "locations": [
-      "src/layer-timeline.mjs:522"
+      "src/layer-timeline.mjs:524"
     ],
     "context": "localizedAttribute(node._name, 'title', 'layerTimeline.nameTitle', {name, suffix: layer.drawing ? {messageKey: 'layerTimeline.drawingLayer'} : ''});"
   },
   "layerTimeline.duplicateMotion": {
     "locations": [
-      "src/layer-timeline.mjs:764"
+      "src/layer-timeline.mjs:767"
     ],
     "context": "!locked&&{label:interfaceText(\"layerTimeline.duplicateMotion\"), labelKey: \"layerTimeline.duplicateMotion\",symbol:'duplicate',action:()=>{editor._selectedCameraM"
   },
   "layerTimeline.enableMotion": {
     "locations": [
       "src/camera-motion-timeline.mjs:120",
-      "src/layer-timeline.mjs:763"
+      "src/layer-timeline.mjs:766"
     ],
     "context": "return this.editor.movieclipBatch(interfaceText(enabled?'layerTimeline.enableMotion':'layerTimeline.muteMotion'),()=>{for(const clip of clips)this.editor.setCam"
   },
   "layerTimeline.expand": {
     "locations": [
-      "src/layer-timeline.mjs:516"
+      "src/layer-timeline.mjs:518"
     ],
     "context": "node._disclosure.setAttribute('aria-expanded',String(layer.kind==='folder'?!layer.collapsed:!this.cameraMotionsCollapsed));localizedAttribute(node._disclosure, "
   },
   "layerTimeline.extendExposure": {
     "locations": [
-      "src/layer-timeline.mjs:780"
+      "src/layer-timeline.mjs:783"
     ],
     "context": "hasFrames&&!locked&&{label:interfaceText(\"layerTimeline.extendExposure\"), labelKey: \"layerTimeline.extendExposure\",shortcut:this.shortcut('extend-keyframe'),sym"
   },
   "layerTimeline.extendKeyframe": {
     "locations": [
-      "src/layer-timeline.mjs:726"
+      "src/layer-timeline.mjs:729"
     ],
     "context": "extendKeyframe(){return this._run(()=>this.editor.movieclipBatch(interfaceText(\"layerTimeline.extendKeyframe\"),()=>{for(const id of this.ids){const {start,end}="
   },
   "layerTimeline.findLayers": {
     "locations": [
-      "src/layer-timeline.mjs:753"
+      "src/layer-timeline.mjs:756"
     ],
     "context": "{label:interfaceText(\"layerTimeline.findLayers\"), labelKey: \"layerTimeline.findLayers\",symbol:'search',shortcut:'Ctrl+F',action:()=>this.openLayerSearch()},"
   },
   "layerTimeline.fitAnimation": {
     "locations": [
-      "src/layer-timeline.mjs:747"
+      "src/layer-timeline.mjs:750"
     ],
     "context": "{label:interfaceText(\"layerTimeline.fitAnimation\"), labelKey: \"layerTimeline.fitAnimation\",symbol:'fit',action:()=>this.fitFrameRange()},"
   },
   "layerTimeline.fitSelectedFrames": {
     "locations": [
-      "src/layer-timeline.mjs:748"
+      "src/layer-timeline.mjs:751"
     ],
     "context": "{label:interfaceText(\"layerTimeline.fitSelectedFrames\"), labelKey: \"layerTimeline.fitSelectedFrames\",symbol:'maximize',action:()=>this.fitFrameRange(true)},"
   },
   "layerTimeline.focusSelectedLayers": {
     "locations": [
-      "src/layer-timeline.mjs:754",
+      "src/layer-timeline.mjs:757",
       "src/timeline-menu.mjs:25"
     ],
     "context": "{label:this.focusedLayerIds?interfaceText(\"layerTimeline.showAllLayers\"):interfaceText(\"layerTimeline.focusSelectedLayers\"), labelKey: (this.focusedLayerIds ? \""
@@ -28555,20 +28555,20 @@
   },
   "layerTimeline.frame": {
     "locations": [
-      "src/layer-timeline.mjs:591"
+      "src/layer-timeline.mjs:593"
     ],
     "context": "else localizedText(this.live,'layerTimeline.frame',{name:layer.name,value:this.start+1,value2:''});"
   },
   "layerTimeline.frameRange": {
     "locations": [
       "src/camera-motion-timeline.mjs:138",
-      "src/layer-timeline.mjs:590"
+      "src/layer-timeline.mjs:592"
     ],
     "context": "if(this._tipClip!==key){this._tipClip=key;localizedText(tip,'layerTimeline.frameRange',{name:{messageKey:motionTypeMessages[clip.type]},first:start+1,last:start"
   },
   "layerTimeline.framesRange": {
     "locations": [
-      "src/layer-timeline.mjs:777"
+      "src/layer-timeline.mjs:780"
     ],
     "context": "[{heading:interfaceText(frames>1?'layerTimeline.framesRange':'filmstrip.card',frames>1?{first:this.start+1,last:this.end+1}:{frame:this.start+1}),headingKey:fra"
   },
@@ -28580,7 +28580,7 @@
   },
   "layerTimeline.hideName": {
     "locations": [
-      "src/layer-timeline.mjs:526"
+      "src/layer-timeline.mjs:528"
     ],
     "context": "for (const attribute of ['aria-label', 'title']) localizedAttribute(node._eye, attribute, layer.visible ? 'layerTimeline.hideName' : 'layerTimeline.showName', {"
   },
@@ -28592,13 +28592,13 @@
   },
   "layerTimeline.layerFrames": {
     "locations": [
-      "src/layer-timeline.mjs:90"
+      "src/layer-timeline.mjs:91"
     ],
     "context": "this.labelViewport=element('div',this.main,'sheet-labels');this.scroll=element('div',this.main,'sheet-scroll');this.scroll.tabIndex=0;this.scroll.setAttribute('"
   },
   "layerTimeline.layers": {
     "locations": [
-      "src/layer-timeline.mjs:751"
+      "src/layer-timeline.mjs:754"
     ],
     "context": "{heading:interfaceText(\"layerTimeline.layers\")},"
   },
@@ -28610,14 +28610,14 @@
   },
   "layerTimeline.lockName": {
     "locations": [
-      "src/layer-timeline.mjs:528"
+      "src/layer-timeline.mjs:530"
     ],
     "context": "for (const attribute of ['aria-label', 'title']) localizedAttribute(node._lock, attribute, layer.locked ? 'layerTimeline.unlockName' : 'layerTimeline.lockName',"
   },
   "layerTimeline.motionCount": {
     "locations": [
-      "src/layer-timeline.mjs:518",
-      "src/layer-timeline.mjs:519"
+      "src/layer-timeline.mjs:520",
+      "src/layer-timeline.mjs:521"
     ],
     "context": "const suffix = layer.kind === 'camera' && this.cameraMotionsCollapsed ? {messageKey: 'layerTimeline.motionCount', messageParams: {count: this.editor.getCameraMo"
   },
@@ -28636,13 +28636,13 @@
   "layerTimeline.muteMotion": {
     "locations": [
       "src/camera-motion-timeline.mjs:120",
-      "src/layer-timeline.mjs:763"
+      "src/layer-timeline.mjs:766"
     ],
     "context": "return this.editor.movieclipBatch(interfaceText(enabled?'layerTimeline.enableMotion':'layerTimeline.muteMotion'),()=>{for(const clip of clips)this.editor.setCam"
   },
   "layerTimeline.nameTitle": {
     "locations": [
-      "src/layer-timeline.mjs:522"
+      "src/layer-timeline.mjs:524"
     ],
     "context": "localizedAttribute(node._name, 'title', 'layerTimeline.nameTitle', {name, suffix: layer.drawing ? {messageKey: 'layerTimeline.drawingLayer'} : ''});"
   },
@@ -28666,32 +28666,32 @@
   },
   "layerTimeline.noMatchingLayers": {
     "locations": [
-      "src/layer-timeline.mjs:89",
+      "src/layer-timeline.mjs:90",
       "src/timeline-layers-popover.mjs:166"
     ],
     "context": "this.emptyLayers=translatedElement(element('div',this.main,'sheet-empty-layers',interfaceText(\"layerTimeline.noMatchingLayers\")), \"layerTimeline.noMatchingLayer"
   },
   "layerTimeline.parallaxPercent": {
     "locations": [
-      "src/layer-timeline.mjs:520"
+      "src/layer-timeline.mjs:522"
     ],
     "context": ": layer.parallax?.enabled ? {messageKey: 'layerTimeline.parallaxPercent', messageParams: {percent: Math.round(layer.parallax.x * 100)}} : '';"
   },
   "layerTimeline.pasteFrames": {
     "locations": [
-      "src/layer-timeline.mjs:786"
+      "src/layer-timeline.mjs:789"
     ],
     "context": "canPaste&&!locked&&{label:interfaceText(\"layerTimeline.pasteFrames\"), labelKey: \"layerTimeline.pasteFrames\",shortcut:this.shortcut('paste'),symbol:'clipboard',a"
   },
   "layerTimeline.removeFrames": {
     "locations": [
-      "src/layer-timeline.mjs:788"
+      "src/layer-timeline.mjs:791"
     ],
     "context": "hasFrames&&!locked&&{label:interfaceText(\"layerTimeline.removeFrames\"), labelKey: \"layerTimeline.removeFrames\",shortcut:this.shortcut('remove-frames'),symbol:'t"
   },
   "layerTimeline.rename": {
     "locations": [
-      "src/layer-timeline.mjs:570",
+      "src/layer-timeline.mjs:572",
       "src/timeline-layers-popover.mjs:183"
     ],
     "context": "const input=element('input',null,'sheet-layer-rename');node._name.after(input);localizedAttribute(input, 'aria-label', \"layerTimeline.rename\", {name: target.nam"
@@ -28704,63 +28704,63 @@
   },
   "layerTimeline.resizeLayerNames": {
     "locations": [
-      "src/layer-timeline.mjs:93"
+      "src/layer-timeline.mjs:94"
     ],
     "context": "this.divider=element('div',this.main,'sheet-resize');this.divider.setAttribute('role','separator');localizedAttribute(this.divider, 'aria-label', \"layerTimeline"
   },
   "layerTimeline.revealPlayhead": {
     "locations": [
-      "src/layer-timeline.mjs:749"
+      "src/layer-timeline.mjs:752"
     ],
     "context": "{label:interfaceText(\"layerTimeline.revealPlayhead\"), labelKey: \"layerTimeline.revealPlayhead\",symbol:'chevron-right',action:()=>this.revealPlayhead()},"
   },
   "layerTimeline.rowName": {
     "locations": [
-      "src/layer-timeline.mjs:521"
+      "src/layer-timeline.mjs:523"
     ],
     "context": "localizedText(node._text, 'layerTimeline.rowName', {name, suffix});"
   },
   "layerTimeline.scene": {
     "locations": [
-      "src/layer-timeline.mjs:517"
+      "src/layer-timeline.mjs:519"
     ],
     "context": "const name = layer.kind === 'camera' ? {messageKey: 'layerTimeline.camera'} : layer.kind === 'scene' ? {messageKey: 'layerTimeline.scene'} : layer.kind === 'mot"
   },
   "layerTimeline.selectCamera": {
     "locations": [
-      "src/layer-timeline.mjs:758"
+      "src/layer-timeline.mjs:761"
     ],
     "context": "{label:interfaceText(\"layerTimeline.selectCamera\"), labelKey: \"layerTimeline.selectCamera\",symbol:'camera',action:()=>this._selectLayer('camera')},"
   },
   "layerTimeline.selectLayer": {
     "locations": [
-      "src/layer-timeline.mjs:523"
+      "src/layer-timeline.mjs:525"
     ],
     "context": "localizedAttribute(node._name, 'aria-label', 'layerTimeline.selectLayer', {name});"
   },
   "layerTimeline.selectLayer2": {
     "locations": [
-      "src/layer-timeline.mjs:491"
+      "src/layer-timeline.mjs:493"
     ],
     "context": "const name=this._button(node,'layers',interfaceText(\"layerTimeline.selectLayer2\"),event=>this._selectLayer(node._id,event));name.classList.add('sheet-layer-name"
   },
   "layerTimeline.selectScene": {
     "locations": [
-      "src/layer-timeline.mjs:759"
+      "src/layer-timeline.mjs:762"
     ],
     "context": "{label:interfaceText(\"layerTimeline.selectScene\"), labelKey: \"layerTimeline.selectScene\",symbol:'scene',action:()=>this._selectLayer('scene')},"
   },
   "layerTimeline.showAllLayers": {
     "locations": [
-      "src/layer-timeline.mjs:754",
-      "src/layer-timeline.mjs:755",
+      "src/layer-timeline.mjs:757",
+      "src/layer-timeline.mjs:758",
       "src/timeline-menu.mjs:27"
     ],
     "context": "{label:this.focusedLayerIds?interfaceText(\"layerTimeline.showAllLayers\"):interfaceText(\"layerTimeline.focusSelectedLayers\"), labelKey: (this.focusedLayerIds ? \""
   },
   "layerTimeline.showAllLayersOnCanvas": {
     "locations": [
-      "src/layer-timeline.mjs:755"
+      "src/layer-timeline.mjs:758"
     ],
     "context": "{label:interfaceText(\"layerTimeline.showAllLayersOnCanvas\"), labelKey: \"layerTimeline.showAllLayersOnCanvas\",symbol:'eye',action:()=>editor.movieclipBatch(inter"
   },
@@ -28772,31 +28772,31 @@
   },
   "layerTimeline.showName": {
     "locations": [
-      "src/layer-timeline.mjs:526"
+      "src/layer-timeline.mjs:528"
     ],
     "context": "for (const attribute of ['aria-label', 'title']) localizedAttribute(node._eye, attribute, layer.visible ? 'layerTimeline.hideName' : 'layerTimeline.showName', {"
   },
   "layerTimeline.toggleLayerLock": {
     "locations": [
-      "src/layer-timeline.mjs:495"
+      "src/layer-timeline.mjs:497"
     ],
     "context": "const lock=this._button(node,'lock',interfaceText(\"layerTimeline.toggleLayerLock\"),()=>this.editor.setLayerLocked(node._id,!this.editor.getLayer(node._id).locke"
   },
   "layerTimeline.toggleLayerVisibility": {
     "locations": [
-      "src/layer-timeline.mjs:494"
+      "src/layer-timeline.mjs:496"
     ],
     "context": "const eye=this._button(node,'eye',interfaceText(\"layerTimeline.toggleLayerVisibility\"),()=>{const row=this.tracks.find(t=>t.id===node._id);if(row?.kind.startsWi"
   },
   "layerTimeline.unlockAllLayers": {
     "locations": [
-      "src/layer-timeline.mjs:756"
+      "src/layer-timeline.mjs:759"
     ],
     "context": "{label:interfaceText(\"layerTimeline.unlockAllLayers\"), labelKey: \"layerTimeline.unlockAllLayers\",symbol:'unlock',action:()=>editor.movieclipBatch(interfaceText("
   },
   "layerTimeline.unlockCamera": {
     "locations": [
-      "src/layer-timeline.mjs:766"
+      "src/layer-timeline.mjs:769"
     ],
     "context": "locked&&{disabled:editor.isLayerFocusLocked('camera'),label:interfaceText(\"layerTimeline.unlockCamera\"), labelKey: \"layerTimeline.unlockCamera\",symbol:'unlock',"
   },
@@ -28808,31 +28808,31 @@
   },
   "layerTimeline.unlockLayers": {
     "locations": [
-      "src/layer-timeline.mjs:789"
+      "src/layer-timeline.mjs:792"
     ],
     "context": "locked&&{disabled:this.ids.some(id=>editor.isLayerFocusLocked(id)),label:interfaceText(\"layerTimeline.unlockLayers\"), labelKey: \"layerTimeline.unlockLayers\",sym"
   },
   "layerTimeline.unlockName": {
     "locations": [
-      "src/layer-timeline.mjs:528"
+      "src/layer-timeline.mjs:530"
     ],
     "context": "for (const attribute of ['aria-label', 'title']) localizedAttribute(node._lock, attribute, layer.locked ? 'layerTimeline.unlockName' : 'layerTimeline.lockName',"
   },
   "layerTimeline.view": {
     "locations": [
-      "src/layer-timeline.mjs:746"
+      "src/layer-timeline.mjs:749"
     ],
     "context": "{heading:interfaceText(\"layerTimeline.view\")},"
   },
   "layerTimeline.visibleEffectKeys": {
     "locations": [
-      "src/layer-timeline.mjs:492"
+      "src/layer-timeline.mjs:494"
     ],
     "context": "const channels=element('button',node,'vfx-channel-trigger');channels.type='button';localizedMarkup(channels, icon('sliders'));localizedAttribute(channels, 'aria"
   },
   "layerTimeline.visibleEffectKeys2": {
     "locations": [
-      "src/layer-timeline.mjs:514"
+      "src/layer-timeline.mjs:516"
     ],
     "context": "const clip=layer.kind==='vfx'&&layer.clips.find(c=>c.id===this.editor._selectedVfxClip);node._channels.hidden=!clip||!Object.values(clip.keys).some(keys=>keys.l"
   },
@@ -32728,67 +32728,67 @@
   },
   "sheetFilmstrip.animationFrames": {
     "locations": [
-      "src/sheet-filmstrip.mjs:71"
+      "src/sheet-filmstrip.mjs:72"
     ],
     "context": "localizedAttribute(this.strip, 'aria-label', \"sheetFilmstrip.animationFrames\", {});"
   },
   "sheetFilmstrip.changeEasing": {
     "locations": [
-      "src/sheet-filmstrip.mjs:545"
+      "src/sheet-filmstrip.mjs:553"
     ],
     "context": "[!locked && {label: interfaceText(\"sheetFilmstrip.changeEasing\"), labelKey: \"sheetFilmstrip.changeEasing\", symbol: 'sliders', action: () => this.showEasingPopov"
   },
   "sheetFilmstrip.copyFrames": {
     "locations": [
-      "src/sheet-filmstrip.mjs:546"
+      "src/sheet-filmstrip.mjs:554"
     ],
     "context": "[!locked && {label: interfaceText(\"sheetFilmstrip.copyFrames\"), labelKey: \"sheetFilmstrip.copyFrames\", shortcut: this.shortcut('copy'), symbol: 'duplicate', act"
   },
   "sheetFilmstrip.cutFrames": {
     "locations": [
-      "src/sheet-filmstrip.mjs:547"
+      "src/sheet-filmstrip.mjs:555"
     ],
     "context": "!locked && {label: interfaceText(\"sheetFilmstrip.cutFrames\"), labelKey: \"sheetFilmstrip.cutFrames\", shortcut: this.shortcut('cut'), symbol: 'cut', action: () =>"
   },
   "sheetFilmstrip.deleteFrames": {
     "locations": [
-      "src/sheet-filmstrip.mjs:549"
+      "src/sheet-filmstrip.mjs:557"
     ],
     "context": "[!locked && {label: interfaceText(\"sheetFilmstrip.deleteFrames\"), labelKey: \"sheetFilmstrip.deleteFrames\", shortcut: this.shortcut('delete'), symbol: 'trash', d"
   },
   "sheetFilmstrip.extendKeyframe": {
     "locations": [
-      "src/sheet-filmstrip.mjs:533"
+      "src/sheet-filmstrip.mjs:541"
     ],
     "context": "return this._run(() => this.editor.movieclipBatch(interfaceText(\"sheetFilmstrip.extendKeyframe\"), () => {"
   },
   "sheetFilmstrip.pasteFrames": {
     "locations": [
-      "src/sheet-filmstrip.mjs:548"
+      "src/sheet-filmstrip.mjs:556"
     ],
     "context": "canPaste && {label: interfaceText(\"sheetFilmstrip.pasteFrames\"), labelKey: \"sheetFilmstrip.pasteFrames\", shortcut: this.shortcut('paste'), symbol: 'clipboard', "
   },
   "sheetFilmstrip.removeSceneFrames": {
     "locations": [
-      "src/sheet-filmstrip.mjs:520"
+      "src/sheet-filmstrip.mjs:528"
     ],
     "context": "return this.editor.movieclipBatch(interfaceText(\"sheetFilmstrip.removeSceneFrames\"), () => {"
   },
   "sheetFilmstrip.setFrameInbetweens": {
     "locations": [
-      "src/sheet-filmstrip.mjs:267"
+      "src/sheet-filmstrip.mjs:268"
     ],
     "context": "const result = this.editor.movieclipBatch(interfaceText(\"sheetFilmstrip.setFrameInbetweens\"), () => {"
   },
   "sheetFilmstrip.setSceneFrameEasing": {
     "locations": [
-      "src/sheet-filmstrip.mjs:385"
+      "src/sheet-filmstrip.mjs:386"
     ],
     "context": "return this.editor.movieclipBatch(interfaceText(\"sheetFilmstrip.setSceneFrameEasing\"), () => {"
   },
   "sheetFilmstrip.unlockLayers": {
     "locations": [
-      "src/sheet-filmstrip.mjs:550"
+      "src/sheet-filmstrip.mjs:558"
     ],
     "context": "locked && {label: interfaceText(\"sheetFilmstrip.unlockLayers\"), labelKey: \"sheetFilmstrip.unlockLayers\", symbol: 'unlock', action: () => { for (const id of this"
   },
@@ -36151,8 +36151,8 @@
   },
   "timeline.clearFind": {
     "locations": [
-      "src/layer-timeline.mjs:66",
-      "src/layer-timeline.mjs:67"
+      "src/layer-timeline.mjs:67",
+      "src/layer-timeline.mjs:68"
     ],
     "context": "this.clearSearch=this._button(search,'close',sayTimeline(null,'timeline.clearFind'),()=>this.setLayerFilter(''));this.clearSearch.hidden=true;"
   },
@@ -36209,9 +36209,9 @@
   },
   "timeline.findLayers": {
     "locations": [
-      "src/layer-timeline.mjs:62",
-      "src/layer-timeline.mjs:86",
-      "src/layer-timeline.mjs:87"
+      "src/layer-timeline.mjs:63",
+      "src/layer-timeline.mjs:87",
+      "src/layer-timeline.mjs:88"
     ],
     "context": "this.layerSearch=element('input',search);this.layerSearch.type='search';localizedAttribute(this.layerSearch, \"placeholder\", 'timeline.findLayers', {});localized"
   },
@@ -36283,7 +36283,7 @@
   },
   "timeline.layers": {
     "locations": [
-      "src/layer-timeline.mjs:60"
+      "src/layer-timeline.mjs:61"
     ],
     "context": "this.labelTitle=translatedElement(element('span',head,'sheet-label-title',sayTimeline(null,'timeline.layers')), 'timeline.layers', {});"
   },
@@ -36303,26 +36303,26 @@
   },
   "timeline.moreLayerTypes": {
     "locations": [
-      "src/layer-timeline.mjs:74",
-      "src/layer-timeline.mjs:78"
+      "src/layer-timeline.mjs:75",
+      "src/layer-timeline.mjs:79"
     ],
     "context": "this.newLayerMore=element('button',add,'ui-split-more');this.newLayerMore.type='button';localizedMarkup(this.newLayerMore, icon('chevron-down'));localizedAttrib"
   },
   "timeline.moreRows": {
     "locations": [
-      "src/layer-timeline.mjs:467"
+      "src/layer-timeline.mjs:469"
     ],
     "context": "if(below){localizedText(this.moreRows.lastChild, 'timeline.moreRows', {count:below});localizedAttribute(this.moreRows, 'aria-label', below===1?'timeline.moreRow"
   },
   "timeline.moreRowsName": {
     "locations": [
-      "src/layer-timeline.mjs:467"
+      "src/layer-timeline.mjs:469"
     ],
     "context": "if(below){localizedText(this.moreRows.lastChild, 'timeline.moreRows', {count:below});localizedAttribute(this.moreRows, 'aria-label', below===1?'timeline.moreRow"
   },
   "timeline.moreRowsNameOne": {
     "locations": [
-      "src/layer-timeline.mjs:467"
+      "src/layer-timeline.mjs:469"
     ],
     "context": "if(below){localizedText(this.moreRows.lastChild, 'timeline.moreRows', {count:below});localizedAttribute(this.moreRows, 'aria-label', below===1?'timeline.moreRow"
   },
@@ -36334,17 +36334,17 @@
   },
   "timeline.newDrawingLayer": {
     "locations": [
-      "src/layer-timeline.mjs:79",
+      "src/layer-timeline.mjs:80",
       "src/timeline-organization.mjs:81"
     ],
     "context": "items:[row('timeline.newLayer','plus',()=>this.newLayer('layer')),row('timeline.newDrawingLayer','brush',()=>this.newLayer('drawing')),null,"
   },
   "timeline.newLayer": {
     "locations": [
-      "src/layer-timeline.mjs:71",
       "src/layer-timeline.mjs:72",
       "src/layer-timeline.mjs:73",
-      "src/layer-timeline.mjs:79",
+      "src/layer-timeline.mjs:74",
+      "src/layer-timeline.mjs:80",
       "src/timeline-organization.mjs:81"
     ],
     "context": "const add=element('div',head,'ui-split sheet-new-layer');add.setAttribute('role','group');add.dataset.size='sm';localizedAttribute(add, 'aria-label', 'timeline."

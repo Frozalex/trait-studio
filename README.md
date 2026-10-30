@@ -10,8 +10,8 @@ Trait Studio est une version indépendante de [StykAnimate](https://github.com/f
 
 - **Six mouvements éditables** : course, marche, saut, salut, respiration et moonwalk. Choisis couleur, durée, souplesse et direction ; ouvre ensuite le clip pour retoucher chaque pose.
 - **Personnage Élan** : tête creuse, traits fins, membres courbes et quatre contrôles IK pour déplacer mains et pieds.
-- **Bibliothèque de poses** : enregistrement local, application au même squelette, insertion, import/export JSON.
-- **Repères musicaux** : frappe du tempo, BPM, décalage de l’intro, mesures et repères nommés sauvegardés avec le projet.
+- **Bibliothèque de poses** : vignettes, recherche, renommage, application au même squelette, insertion et import/export JSON.
+- **Repères musicaux** : suggestion locale du tempo et de l’arrivée des basses, réglage manuel et repères visibles dans les timelines.
 - **Identité indépendante** : icône propre, palette verte, profil local séparé ; aucune télémétrie distante ni connexion au catalogue amont.
 
 ## Fonctions héritées
@@ -22,16 +22,18 @@ L’édition bureau propose notamment MP4, WebM, GIF, APNG et séquences d’ima
 
 ## Télécharger
 
-[Préversion Linux x86_64 · 1.3.0](https://github.com/Frozalex/trait-studio/releases/tag/v1.3.0) · [Résultats des vérifications](docs/VALIDATION-1.3.0.md)
+[Trait Studio 1.4.0 · Windows et Linux](https://github.com/Frozalex/trait-studio/releases/tag/v1.4.0) · [Périmètre fonctionnel](docs/FEATURE-COVERAGE.md)
 
-Télécharge l’AppImage, rends-la exécutable, puis ouvre-la :
+Sur Windows, utilise **Setup-x64.exe** pour installer le programme ou **Portable-x64.exe** pour le lancer sans installation. Les exécutables ne sont pas signés numériquement.
+
+Sur Linux, télécharge l’AppImage, rends-la exécutable, puis ouvre-la :
 
 ```bash
-chmod +x TraitStudio-1.3.0-linux-x86_64.AppImage
-./TraitStudio-1.3.0-linux-x86_64.AppImage
+chmod +x TraitStudio-1.4.0-linux-x86_64.AppImage
+./TraitStudio-1.4.0-linux-x86_64.AppImage
 ```
 
-Les binaires Windows, macOS et mobiles ne sont pas fournis dans cette première préversion.
+Les binaires macOS et les applications mobiles natives ne sont pas fournis.
 
 ## Démarrer depuis les sources
 
@@ -79,8 +81,8 @@ Le test navigateur lance et arrête lui-même son serveur local. Les tests utili
 
 ## État du projet
 
-Première version de Trait Studio, **1.3.0**, construite sur une base déjà développée. Les nouveaux outils sont fonctionnels ; ce numéro poursuit la numérotation technique amont et ne signifie pas plusieurs versions antérieures de Trait Studio. Ce n’est pas une promesse de parité totale ou de supériorité sur Stick Nodes Pro.
+**1.4.0** poursuit la première préversion Trait Studio 1.3.0 sur une base déjà développée. Le dépôt contient les sources, les tests et les procédures de construction. Ce n’est pas une promesse de parité totale ou de supériorité sur Stick Nodes Pro.
 
-Le tempo se règle manuellement ou par frappe ; la détection automatique des basses n’est pas encore implémentée. La grille se consulte dans l’atelier, pas sur la règle principale. Les mouvements sont des points de départ éditables, à affiner selon la scène. Les applications Android/iOS natives ne sont pas fournies.
+L’analyse musicale propose des repères à vérifier à l’écoute ; elle ne garantit pas une détection correcte sur tout morceau. Les mouvements sont des points de départ éditables, à affiner selon la scène. Les applications Android/iOS natives ne sont pas fournies.
 
 [Architecture et prochaines étapes](docs/TRAIT-STUDIO.md) · [Historique](CHANGELOG.md) · [Signaler un problème](https://github.com/Frozalex/trait-studio/issues)

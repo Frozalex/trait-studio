@@ -1,3 +1,4 @@
+import {paintRhythmGuide,markerNear} from './trait/timeline-rhythm.mjs';
 import {presentError} from './error-presentation.mjs';
 import {translatedElement, localizedMarkup, localizedAttribute, localizedText} from './localization-bindings.mjs';
 import {messageError} from './localized-error.mjs';
@@ -324,6 +325,7 @@ export class Timeline{
       ctx.restore();
     }
     this._paintRuler(ctx,{first,last,interval,sx,w,ruler,endX});
+    paintRhythmGuide(ctx,this.editor.report,{first,last,xAt:tick=>(tick+.5)*step-sx,ruler,height:h,colors:c,pixelsPerTick:step});
     this._syncMoreRows(layout.at(h-ruler+sy),count);
     this._paintLabels(firstRow,lastRow,sy);
     // Rename on create: the new row opens its name once it is painted.
@@ -628,7 +630,7 @@ export class Timeline{
     if(event.clientX>=bounds.left+this.scroll.clientWidth||event.clientY>=bounds.top+this.scroll.clientHeight)return;
     if(event.button!==0)return;this.onSeek?.();const hit=this._hit(event);if(hit.row>=this.tracks.length)return;
     try{this.scroll.setPointerCapture(event.pointerId);}catch{/* a replayed tap's finger has already lifted (touch/timeline-touch.mjs) */}this.scroll.focus({preventScroll:true});
-    if(hit.row<0){this.gesture={kind:'scrub',pointer:event.pointerId};this.onScrubStart?.();this.pendingScrub=hit.tick;this.update(false);event.preventDefault();return;}
+    if(hit.row<0){hit.tick=markerNear(this.editor.report,hit.tick,this.pxPerTick)?.tick??hit.tick;this.gesture={kind:'scrub',pointer:event.pointerId};this.onScrubStart?.();this.pendingScrub=hit.tick;this.update(false);event.preventDefault();return;}
     this.audio?.clearSelection();
     if(this.tracks[hit.row]?.kind==='folder'){this.toggleLayerFolder(this.tracks[hit.row].id);event.preventDefault();return;}
     if(this._motionDown(event,hit))return;
@@ -650,6 +652,7 @@ export class Timeline{
     }
     const hit=this._hit(event),g=this.gesture;
     if(!g){
+      const marker=hit.row<0?markerNear(this.editor.report,hit.tick,this.pxPerTick):null;this.scroll.title=marker?`${marker.label} · ${marker.tick+1}`:'';
       const resize=this._resizeHit(hit),motion=this._motionCursor(hit);this.scroll.style.cursor=hit.row<0?'ew-resize':resize?'ew-resize':motion??'default';this._syncMotionTip(hit);
       if(this.hover?.tick!==hit.tick||this.hover?.row!==hit.row||Boolean(resize)!==this.hoverResize){this.hover=hit;this.hoverResize=Boolean(resize);this.update();}return;
     }

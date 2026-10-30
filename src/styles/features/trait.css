@@ -1,4 +1,5 @@
 @layer features {
+  .trait-workshop { container: trait-workshop / inline-size; }
   .trait-dialog.ui-dialog[data-size="lg"] { block-size: min(720px, calc(100dvh - 32px)); }
   .trait-tabs { display: flex; gap: 8px; border-block-end: 1px solid var(--theme-border); padding-block-end: 12px; margin-block-end: 18px; }
   .trait-tabs :where([aria-selected="true"]) { background: var(--theme-selected); color: var(--theme-accent); }
@@ -30,4 +31,25 @@
   .trait-beat-grid :where(button) { min-block-size: 36px; }
   .trait-beat-grid :where([data-downbeat="true"]) { color: var(--theme-accent); background: var(--theme-selected); border-color: var(--theme-accent); }
   .trait-workshop-launch { white-space: nowrap; }
+  .trait-analysis { padding: 14px; border: 1px solid var(--theme-border); border-radius: 12px; background: var(--theme-subtle); }
+  .trait-analysis-result:empty { display: none; }
+  .trait-pose-list { margin-block-start: 14px; max-block-size: 360px; }
+  .trait-pose-card { flex-wrap: nowrap; gap: 16px; }
+  .trait-pose-preview { flex: 0 0 128px; inline-size: 128px; block-size: 90px; border-radius: 8px; background: var(--theme-subtle); }
+  .trait-pose-details { min-inline-size: 0; flex: 1; display: grid; gap: 4px; }
+  .trait-pose-details :where(.trait-actions) { margin-block: 6px 0; }
+  .trait-rename { display: flex; flex-wrap: wrap; align-items: end; gap: 8px; }
+  .trait-film-rhythm { position: absolute; inset: auto 3px 3px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; border-radius: 3px; padding: 2px 4px; background: var(--theme-selected); color: var(--theme-accent); font-size: 10px; pointer-events: none; }
+  .trait-film-rhythm[hidden] { display: none; }
+  @container trait-workshop (inline-size < 510px) {
+    .trait-motion-layout { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+    .trait-motion-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .trait-motion-card { min-block-size: 48px; }
+    .trait-motion-card :where(span) { display: none; }
+    .trait-tabs { gap: 4px; }
+    .trait-tabs :where(button) { padding-inline: 8px; }
+    .trait-field { max-inline-size: 100%; }
+    .trait-pose-card { align-items: start; gap: 10px; }
+    .trait-pose-preview { flex-basis: 76px; inline-size: 76px; block-size: 90px; }
+  }
 }

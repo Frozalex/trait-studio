@@ -1,17 +1,15 @@
+import {posesPane} from './poses-pane.mjs';
 import {createDialog} from '../ui/ui-dialog.mjs';
 import {buildGeometry,drawGeometry,evaluatedFrame,timeline} from '../pivot/geometry.mjs';
 import {MOTIONS,COLORS,createMotionDocument,createFigureDocument,insertMotion} from './motions.mjs';
-import {PoseBank,DesktopPoseBank,capturePose,applyPose} from './poses.mjs';
-import {rhythmOf,setRhythm,beatGrid,tapTempo} from './rhythm.mjs';
+import {PoseBank,DesktopPoseBank} from './poses.mjs';
+import {rhythmPane} from './rhythm-pane.mjs';
+import {node,button,field} from './ui.mjs';
 
-const node=(tag,className,text)=>{const n=document.createElement(tag);if(className)n.className=className;if(text!==undefined)n.textContent=text;return n;};
-const button=(text,fn,variant='outline')=>{const b=node('button','ui-button',text);b.type='button';b.dataset.variant=variant;b.addEventListener('click',fn);return b;};
-function field(label,value,type='number',attrs={}){const box=node('label','trait-field'),input=node('input','ui-input');input.type=type;input.value=value;Object.assign(input,attrs);box.append(node('span',null,label),input);return {box,input};}
-function download(name,text){const url=URL.createObjectURL(new Blob([text],{type:'application/json'})),a=node('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
 function frameAt(report,tick){const rows=timeline(report);let i=0;while(i+1<rows.length&&rows[i+1].start<=tick)i++;const row=rows[i];return evaluatedFrame(report,i,row.count?(tick-row.start)/row.count:0,tick);}
 
 /** Uses the existing document, clipboard and history. No parallel editor state. */
-export function installTraitStudio({editor,actions,pause,finishEdit,fail,toast,overlays}){
+export function installTraitStudio({editor,actions,pause,finishEdit,fail,toast,overlays,audioEngine}){
   const bank=window.stykDesktop?.getTraitPoses ? new DesktopPoseBank(window.stykDesktop) : new PoseBank(globalThis.localStorage);let active=null;
   async function ready(){await bank.ready;pause();await finishEdit();if(window.styk?.builder?.active)throw new Error('Termine la création du personnage avant d’ouvrir l’atelier.');}
   function open(){
@@ -22,7 +20,7 @@ export function installTraitStudio({editor,actions,pause,finishEdit,fail,toast,o
     const dialog=createDialog({id:'trait-workshop',className:'trait-dialog',size:'lg',title:'Atelier Trait',description:'Des poses au mouvement. Chaque image reste à toi.',body,overlays,actions:[{label:'Retour à la scène',value:'close',variant:'primary'}]});active=dialog;
     const say=message=>{status.textContent=message;};
     const safe=fn=>async()=>{try{say('');await ready();await fn();}catch(error){say(error.message);}};
-    const show=id=>{disposePane();disposePane=()=>{};pane=id;content.replaceChildren();say('');for(const t of tabs.children){const selected=t.dataset.pane===id;t.setAttribute('aria-selected',String(selected));t.tabIndex=selected?0:-1;}content.id=`trait-pane-${id}`;content.setAttribute('role','tabpanel');content.setAttribute('aria-labelledby',`trait-tab-${id}`);
+    const show=id=>{disposePane();disposePane=()=>{};pane=id;content.replaceChildren();say('');for(const t of tabs.children){const selected=t.dataset.pane===id;t.setAttribute('aria-selected',String(selected));t.tabIndex=selected?0:-1;}content.id=`trait-pane-${id}`;content.setAttribute('role','tabpanel');content.setAttribute('aria-labelledby',`trait-tab-${id}`);body.closest('.ui-dialog-body')?.scrollTo(0,0);
       if(id==='motions')motions();else if(id==='poses')poses();else rhythm();};
     for(const [id,label] of [['motions','Mouvements'],['poses','Mes poses'],['rhythm','Rythme']]){
       const b=button(label,()=>show(id),'ghost');b.id=`trait-tab-${id}`;b.dataset.pane=id;b.setAttribute('role','tab');b.setAttribute('aria-controls',`trait-pane-${id}`);tabs.append(b);
@@ -46,30 +44,8 @@ export function installTraitStudio({editor,actions,pause,finishEdit,fail,toast,o
       const paint=now=>{if(!dialog.element.open)return;const tick=reduce?0:Math.floor((now-start)/1000*editor.report.fps)%Math.max(8,frames);if(doc&&tick!==last){last=tick;ctx.clearRect(0,0,canvas.width,canvas.height);ctx.save();ctx.translate(canvas.width/2,canvas.height-52);ctx.scale(1.7,1.7);drawGeometry(ctx,buildGeometry(doc,frameAt(doc,tick)));ctx.restore();}if(!reduce)raf=requestAnimationFrame(paint);};
       raf=requestAnimationFrame(paint);disposePane=()=>cancelAnimationFrame(raf);
     }
-    function poses(){
-      const intro=node('p','trait-hint','Enregistre une pose, puis réapplique-la au même squelette. La position et la couleur du personnage restent les siennes.'),toolbar=node('div','trait-actions'),name=field('Nom de la pose','Ma pose','text',{maxLength:60}),list=node('div','trait-pose-list');
-      const refresh=()=>{list.replaceChildren();if(!bank.poses.length)list.append(node('p','trait-empty','Ta bibliothèque attend sa première pose. Sélectionne un personnage dans la scène, puis enregistre sa pose.'));
-        for(const pose of bank.poses){const row=node('div','trait-pose-row');row.append(node('strong',null,pose.name),button('Appliquer',safe(()=>{applyPose(editor,pose);say(`Pose « ${pose.name} » appliquée.`);})),button('Insérer',safe(()=>{editor.importFigure(pose.document);dialog.close('pose');})),button('Retirer',async()=>{try{await bank.remove(pose.id);refresh();say('Pose retirée de la bibliothèque locale.');}catch(e){say(e.message);}}));list.append(row);}
-      };
-      const save=button('Enregistrer la pose',safe(async()=>{await bank.add(capturePose(editor,name.input.value));refresh();say('Pose enregistrée dans ce navigateur ou cette application.');}),'primary');save.id='trait-save-pose';
-      const upload=node('input');upload.type='file';upload.accept='.json';upload.hidden=true;upload.addEventListener('change',async()=>{try{const f=upload.files[0];if(!f)return;if(f.size>4*1024*1024)throw new Error('Le fichier dépasse 4 Mo.');await bank.import(await f.text());refresh();say('Bibliothèque importée.');}catch(e){say(e.message);}finally{upload.value='';}});
-      toolbar.append(save,button('Exporter les poses',()=>download('trait-poses.json',bank.export())),button('Importer',()=>upload.click()));content.append(intro,name.box,toolbar,list,upload);refresh();if(bank.error)say('La bibliothèque locale n’a pas pu être lue. Exporte une copie avant de la remplacer.');
-    }
-    function rhythm(){
-      let value=structuredClone(rhythmOf(editor)),taps=[],windowStart=0;
-      const options=node('div','trait-options'),bpm=field('Tempo (BPM)',value.bpm,'number',{min:'20',max:'300',step:'.1'}),offset=field('Début du rythme (secondes)',value.offset,'number',{min:'0',max:'36000',step:'.001'}),meter=field('Temps par mesure',value.beatsPerBar,'number',{min:'1',max:'12',step:'1'}),grid=node('div','trait-beat-grid'),markers=node('div','trait-markers'),label=field('Nom du repère','Accent','text',{maxLength:60}),counter=node('p','trait-hint');
-      const sync=()=>{value={...rhythmOf(editor),bpm:Number(bpm.input.value),offset:Number(offset.input.value),beatsPerBar:Number(meter.input.value)};};
-      const refresh=()=>{grid.replaceChildren();const beats=beatGrid(value,editor.report.fps,editor.totalTicks,{start:windowStart,limit:64});counter.textContent=`${editor.report.fps} images/s · ${editor.totalTicks} images · image actuelle ${Math.round(editor.tick)+1}`;
-        for(const beat of beats){const b=button(`${beat.bar}.${beat.beat}`,()=>{pause();editor.seek(beat.tick);counter.textContent=`Mesure ${beat.bar}, temps ${beat.beat} · image ${beat.tick+1}`;});b.dataset.downbeat=String(beat.beat===1);b.title=`Image ${beat.tick+1} · ${(beat.tick/editor.report.fps).toFixed(3)} s`;grid.append(b);}
-        if(!beats.length)grid.append(node('p','trait-hint','Aucun temps dans cette plage. Allonge la scène ou ajuste le début du rythme.'));
-        markers.replaceChildren();for(const marker of value.markers){const row=node('div','trait-pose-row');row.append(button(`${marker.label} · ${marker.tick+1}`,()=>{pause();editor.seek(marker.tick);}),button('Retirer',safe(()=>{setRhythm(editor,{...rhythmOf(editor),markers:rhythmOf(editor).markers.filter(m=>m.tick!==marker.tick)});value=structuredClone(rhythmOf(editor));refresh();})));markers.append(row);}
-      };
-      options.append(bpm.box,offset.box,meter.box);const actionsRow=node('div','trait-actions');
-      actionsRow.append(button('Taper le tempo',()=>{const now=performance.now();if(taps.length&&now-taps.at(-1)>3000)taps=[];taps=[...taps.slice(-7),now];const tempo=tapTempo(taps);if(tempo)bpm.input.value=tempo;say(tempo?`${tempo} BPM · applique la grille pour l’enregistrer.`:'Continue à taper au rythme de la musique.');}),button('Début = image actuelle',()=>{offset.input.value=(editor.tick/editor.report.fps).toFixed(3);}),button('Appliquer la grille',safe(()=>{sync();setRhythm(editor,value);refresh();say('Grille enregistrée avec le projet.');}),'primary'));
-      const pagination=node('div','trait-actions');pagination.append(button('Début',()=>{windowStart=0;refresh();}),button('Autour du curseur',()=>{windowStart=Math.floor(editor.tick);refresh();}),button('Suite',()=>{const current=beatGrid(value,editor.report.fps,editor.totalTicks,{start:windowStart,limit:64});if(current.length)windowStart=current.at(-1).tick+1;refresh();}));
-      const add=button('Poser un repère',safe(()=>{const current=rhythmOf(editor),tick=Math.round(editor.tick),entry={tick,label:label.input.value.trim().slice(0,60)||'Accent'};setRhythm(editor,{...current,markers:[...current.markers.filter(m=>m.tick!==tick),entry].sort((a,b)=>a.tick-b.tick)});value=structuredClone(rhythmOf(editor));refresh();}));add.id='trait-add-marker';
-      content.append(node('p','trait-hint','Importe ta musique avec le bouton Audio de la timeline. Règle le tempo et le début du rythme, puis clique sur un temps pour placer le curseur.'),options,actionsRow,counter,grid,pagination,label.box,add,markers);refresh();
-    }
+    function poses(){posesPane(content,{bank,editor,dialog,safe,say});}
+    function rhythm(){disposePane=rhythmPane(content,{editor,pause,safe,say,audioEngine});}
     show('motions');void dialog.showModal().finally(()=>{disposePane();active=null;});
   }
   actions['trait-workshop']=async()=>{try{await ready();open();}catch(error){fail(error);}};

@@ -103,6 +103,20 @@ export class AudioEngine {
     };
     const pending = this.preparing.then(run).catch(async error => { if (this.worker) await this.request('embedded-clear').catch(() => {}); throw error; }); this.preparing = pending.catch(() => {}); return pending;
   }
+  async analyzeRhythm(report, {signal} = {}) {
+    check(signal);
+    const clips = audibleClips(audioState(report));
+    if (!clips.length) throw new Error('Importe un son et active sa piste avant l’analyse.');
+    const duration = Math.max(...clips.map(clip => clip.start + clip.duration));
+    await this.prepare(report, {end: Math.min(duration, 600), signal});
+    check(signal);
+    const pending = this.request('analyze-rhythm', {clips, duration}), requestId = this.sequence;
+    const cancel = () => this.worker?.postMessage({operation: 'cancel-analysis', requestId});
+    signal?.addEventListener('abort', cancel, {once: true});
+    try { const result = await pending; check(signal); return result; }
+    catch (error) { check(signal); throw error; }
+    finally { signal?.removeEventListener('abort', cancel); }
+  }
   get running() { return Boolean(this.anchor); }
   get position() { return this.anchor ? Math.min(this.end, this.anchor.time + Math.max(0, this.context.currentTime - this.anchor.clock)) : this.stoppedAt ?? 0; }
   async start(time, end) {
