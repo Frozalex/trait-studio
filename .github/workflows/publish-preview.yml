@@ -1,0 +1,51 @@
+name: Publish verified Trait preview
+on:
+  push:
+    branches: [main]
+    paths: [.github/workflows/publish-preview.yml]
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: publish-trait-1-3-0
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+      SOURCE_SHA: d18f920528551c1554ac9968948afd0eb9d83514
+      VERIFIED_RUN: '41069441159'
+      WORKSHOP_RUN: '41069441189'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check the exact source passed both workflows
+        run: |
+          for run in "$VERIFIED_RUN" "$WORKSHOP_RUN"; do
+            gh api "repos/$GITHUB_REPOSITORY/actions/runs/$run" > "$RUNNER_TEMP/run.json"
+            node -e 'const r=JSON.parse(require("fs").readFileSync(process.argv[1])); if(r.conclusion!=="success" || r.head_sha!==process.env.SOURCE_SHA) process.exit(1);' "$RUNNER_TEMP/run.json"
+          done
+      - uses: actions/download-artifact@v4
+        with:
+          name: linux-appimage
+          path: verified
+          github-token: ${{ github.token }}
+          run-id: ${{ env.VERIFIED_RUN }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.11.0'
+          cache: npm
+      - name: Validate release metadata and hashes
+        env:
+          ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
+        run: |
+          npm ci --no-audit --no-fund
+          npm run release:verify -- verified/release --platform=linux
+          cd verified/release
+          printf '%s\n' '71526178750bd8b38ab30eb2a1486a10916cafbc3366c219d164bea9efd6518f  TraitStudio-1.3.0-linux-x86_64.AppImage' | sha256sum --check
+          sha256sum TraitStudio-1.3.0-linux-x86_64.AppImage latest-linux.yml > SHA256SUMS.txt
+      - name: Publish the verified preview without replacing an existing release
+        run: |
+          gh release create v1.3.0 verified/release/TraitStudio-1.3.0-linux-x86_64.AppImage verified/release/latest-linux.yml verified/release/SHA256SUMS.txt --repo "$GITHUB_REPOSITORY" --target "$SOURCE_SHA" --title 'Trait Studio 1.3.0 — première préversion publique' --notes-file docs/PREVIEW-1.3.0.md --prerelease

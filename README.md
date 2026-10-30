@@ -20,6 +20,19 @@ Création de figures à partir de lignes, cercles, polygones, images et texte ; 
 
 L’édition bureau propose notamment MP4, WebM, GIF, APNG et séquences d’images. Les codecs disponibles dans le navigateur dépendent de celui-ci ; l’application indique les formats utilisables. L’import de tous les fichiers propriétaires possibles n’est pas garanti.
 
+## Télécharger
+
+[Préversion Linux x86_64 · 1.3.0](https://github.com/Frozalex/trait-studio/releases/tag/v1.3.0) · [Résultats des vérifications](docs/VALIDATION-1.3.0.md)
+
+Télécharge l’AppImage, rends-la exécutable, puis ouvre-la :
+
+```bash
+chmod +x TraitStudio-1.3.0-linux-x86_64.AppImage
+./TraitStudio-1.3.0-linux-x86_64.AppImage
+```
+
+Les binaires Windows, macOS et mobiles ne sont pas fournis dans cette première préversion.
+
 ## Démarrer depuis les sources
 
 Prérequis : **Node.js 22+** et **Python 3.11+**. Les constructions automatisées utilisent Node 24.11 et Python 3.12.9.
