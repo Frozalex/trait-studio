@@ -32,7 +32,7 @@ export function motionPoints(id,phase,options={}) {
     hip=[0,-d.leg*(run?.83-.05*Math.cos(2*TAU*(p-.19)):walk?.89+.025*Math.cos(2*TAU*(p-.3)):.90)];
     lean=run?.23:walk?.055:-.14;fl=foot(p,stance,span,lift);fr=foot(p+.5,stance,span,lift);leftSide=rightSide=-1;
     const swing=Math.cos(TAU*p)* (run?.85:.48);
-    armAngles=[-swing,swing,run?1.4:.16];
+    armAngles=[-swing,swing,run?1.4:.16,run?1.4:.16];
   } else if(id==='jump') {
     const t=Math.min(1,Math.max(0,phase));
     const pulse=(a,b,c)=>t<a||t>c?0:t<=b?smooth((t-a)/(b-a)):1-smooth((t-b)/(c-b));
@@ -40,17 +40,17 @@ export function motionPoints(id,phase,options={}) {
     const air=t>.30&&t<.73?Math.sin(Math.PI*(t-.30)/.43)**2:0,lift=air*d.leg*.90;
     hip=[0,-d.leg*(.94-crouch)-lift];lean=crouch*.8;
     fl=[-d.leg*.22,-lift];fr=[d.leg*.22,-lift];
-    const angle=.40+2.0*pulse(.18,.47,.86);
-    armLeft=[-Math.sin(angle)*d.arm*.92,Math.cos(angle)*d.arm*.92];armRight=[-armLeft[0],armLeft[1]];
+    const angle=.40+1.7*pulse(.18,.47,.86);
+    armAngles=[-angle,angle,-.35,.35];
   } else if(id==='wave') {
     armRight=[d.arm*(.61+.10*Math.sin(TAU*p*2)),-d.arm*(.58+.06*Math.cos(TAU*p*2))];
   }
   const neck=[hip[0]+Math.sin(lean)*d.torso,hip[1]-Math.cos(lean)*d.torso];
   let [el,hl]=limb(neck,[neck[0]+armLeft[0],neck[1]+armLeft[1]],d.arm,1);
-  let [er,hr]=limb(neck,[neck[0]+armRight[0],neck[1]+armRight[1]],d.arm,-1);
+  let [er,hr]=limb(neck,[neck[0]+armRight[0],neck[1]+armRight[1]],d.arm,id==='wave'?1:-1);
   if(armAngles) {
-    const chain=angle=>{const elbow=[neck[0]+Math.sin(angle)*d.arm/2,neck[1]+Math.cos(angle)*d.arm/2];return [elbow,[elbow[0]+Math.sin(angle+armAngles[2])*d.arm/2,elbow[1]+Math.cos(angle+armAngles[2])*d.arm/2]];};
-    [el,hl]=chain(armAngles[0]);[er,hr]=chain(armAngles[1]);
+    const chain=(angle,bend)=>{const elbow=[neck[0]+Math.sin(angle)*d.arm/2,neck[1]+Math.cos(angle)*d.arm/2];return [elbow,[elbow[0]+Math.sin(angle+bend)*d.arm/2,elbow[1]+Math.cos(angle+bend)*d.arm/2]];};
+    [el,hl]=chain(armAngles[0],armAngles[2]);[er,hr]=chain(armAngles[1],armAngles[3]);
   }
   const [kl,leftFoot]=limb(hip,fl,d.leg,leftSide),[kr,rightFoot]=limb(hip,fr,d.leg,rightSide);
   const points=[hip,neck,[neck[0]+Math.sin(lean)*d.head,neck[1]-Math.cos(lean)*d.head],el,hl,er,hr,kl,leftFoot,kr,rightFoot];

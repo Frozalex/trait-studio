@@ -10,7 +10,7 @@
 // telemetry are in their expected state, and there were no page errors. On Linux
 // without a display, run it under xvfb-run; without a GPU it reports the Canvas 2D
 // compatibility renderer instead of WebGPU, and both are accepted.
-import { mkdtemp, rm, writeFile } from 'node:fs/promises';
+import { mkdtemp, rm, writeFile, readFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -18,6 +18,8 @@ import { _electron as electron } from '../tests/support/playwright.mjs';
 
 const appRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const packaged = process.argv.includes('--packaged');
+const releaseInfo = JSON.parse(await readFile(path.join(appRoot, 'desktop/release-info.json'), 'utf8'));
+const expectedNotes = `# ${releaseInfo.title}\n\n${releaseInfo.notes.map(note => '- ' + note).join('\n')}`;
 const unpacked = process.platform === 'win32' ? ['win-unpacked', 'Trait Studio.exe']
   : process.platform === 'darwin' ? [process.arch === 'arm64' ? 'mac-arm64' : 'mac', 'Trait Studio.app', 'Contents', 'MacOS', 'Trait Studio']
   : [process.arch === 'arm64' ? 'linux-arm64-unpacked' : 'linux-unpacked', 'trait-studio'];
@@ -63,7 +65,7 @@ try {
   if (packaged && process.platform === 'linux' && executablePath?.endsWith('.AppImage')) {
     expect('Updates are downloaded from the Trait Studio GitHub releases', facts.updates === 'unavailable', facts.updates);
   }
-  expect('Packaged release notes are readable', facts.releaseHistory?.[0]?.markdown?.includes('Trait')) ;
+  expect('Packaged release notes are readable', facts.releaseHistory?.[0]?.version === releaseInfo.version && facts.releaseHistory[0].markdown === expectedNotes, `version ${facts.releaseHistory?.[0]?.version}`);
   await page.evaluate(async () => {
     const {capturePose} = await import('/src/trait/poses.mjs');
     await window.trait.bank.ready;
