@@ -22,7 +22,7 @@ StykAnimate is a local stick animation program built on sound architecture and g
 | Import, formats, saving | `backend/README.md`, `codecs/`, `native/`, `docs/IMPORT-PIPELINE.md`, `docs/document-exports.md` |
 | Desktop and packaging | `desktop/`, `scripts/before-pack.cjs`, `docs/DESKTOP-RELEASE.md` |
 | Tests and measurements | `tests/`, `scripts/smoke-*.mjs`, `scripts/benchmark-*.mjs`; generated output goes to the ignored `artifacts/` |
-| Release history and shipping | `CHANGELOG.md`, `docs/RELEASING.md`, `docs/UPDATES.md`, `.github/workflows/desktop-release.yml` |
+| Release history and shipping | `CHANGELOG.md`, `docs/RELEASING.md`, `docs/UPDATES.md`, `.github/workflows/ci.yml` |
 | Licensing and community | `LICENSE`, `THIRD_PARTY_NOTICES.md`, `CONTRIBUTING.md`, `SECURITY.md` |
 | Public site, catalogue and services | The separate StykAnimate-Site repository; `docs/WEB.md` covers the browser editor |
 
@@ -52,7 +52,7 @@ Read the relevant contract before changing behavior. Current code and workflow c
 
 ## Environment and verification
 
-Use locked dependencies and the runtimes in `.github/workflows/desktop-release.yml` (currently Node 24.11.0 and Python 3.12.9 for releases). Use `npm ci`; avoid incidental upgrades. See `README.md` for source setup and `scripts/requirements-build.txt` for packaging prerequisites. Run commands from the repository root.
+Use locked dependencies and the runtimes in `.github/workflows/ci.yml` (currently Node 24.22.1 and Python 3.14.10 for releases). Use `npm ci`; avoid incidental upgrades. See `README.md` for source setup and `scripts/requirements-build.txt` for packaging prerequisites. Run commands from the repository root.
 
 If PowerShell's `npm` launcher reports a missing `npm-cli.js`, try `npm.cmd` from the same Node installation; it is verified on this workstation. Do not change global tools or dependencies to work around a launcher issue without diagnosing it first.
 

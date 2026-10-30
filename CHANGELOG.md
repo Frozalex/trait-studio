@@ -6,6 +6,10 @@ Trait Studio begins at version 1.3.0. Earlier releases and inherited development
 
 ## [Unreleased]
 
+### Security
+
+- Updated desktop and installation components to address known security vulnerabilities.
+
 ## [1.4.0]
 
 Music and poses

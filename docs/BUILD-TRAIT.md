@@ -4,7 +4,7 @@ Le dépôt contient l’application de bureau et un serveur de développement lo
 
 ## Distribution Linux x86_64
 
-La configuration de référence est [le job Linux](../.github/workflows/ci.yml), sur Ubuntu 24.04 avec Node 24.11.0 et Python 3.12.9. Construire les composants natifs sur le système et l’architecture de destination.
+La configuration de référence est [le job Linux](../.github/workflows/ci.yml), sur Ubuntu 24.04 avec Node 24.22.1 et Python 3.14.10. Construire les composants natifs sur le système et l’architecture de destination.
 
 ```bash
 npm ci
@@ -35,6 +35,6 @@ Les anciens workflows de publication amont sont conservés dans `docs/upstream-w
 
 ## Distribution Windows et Linux à partir de 1.4
 
-Le workflow `ci.yml` construit les deux plateformes avec Node 24.11.0 et Python 3.12.9. Il valide les fichiers empaquetés, le démarrage, la persistance des poses au redémarrage et les exports vidéo. Le cas long produit un MP4 de 90 secondes avec du mouvement et un son synthétique, puis décode les images et le son. Windows ajoute la construction VFW et l’installation du Setup généré dans un dossier temporaire ; le programme installé est comparé au paquet puis démarré.
+Le workflow `ci.yml` construit les deux plateformes avec Node 24.22.1 et Python 3.14.10. Il valide les fichiers empaquetés, le démarrage, la persistance des poses au redémarrage et les exports vidéo. Le cas long produit un MP4 de 90 secondes avec du mouvement et un son synthétique, puis décode les images et le son. Windows ajoute la construction VFW et l’installation du Setup généré dans un dossier temporaire ; le programme installé est comparé au paquet puis démarré.
 
 Les artefacts `linux-appimage` et `windows-desktop` contiennent les exécutables et leurs preuves. Après succès des tests et de `trait-checks.yml` sur le même commit, déclencher `publish-release.yml` avec le numéro du run Tests. La publication vérifie la provenance du code et les empreintes du contenu reçu par GitHub. Les mises à jour sont manuelles. Les exécutables Windows ne sont pas signés.

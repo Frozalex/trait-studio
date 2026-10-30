@@ -32,8 +32,8 @@ def main() -> None:
     else:
         import imageio_ffmpeg
         wheel_version = importlib.metadata.version("imageio-ffmpeg")
-        if wheel_version != "0.6.0":
-            raise RuntimeError("Install the pinned build requirements: imageio-ffmpeg==0.6.0")
+        if wheel_version != "0.7.0":
+            raise RuntimeError("Install the pinned build requirements: imageio-ffmpeg==0.7.0")
         source = Path(imageio_ffmpeg.get_ffmpeg_exe()).resolve()
         binary_root = (Path(imageio_ffmpeg.__file__).resolve().parent / "binaries").resolve()
         if binary_root not in source.parents:
@@ -68,7 +68,7 @@ def main() -> None:
         "versionAndConfiguration": version, "license": "GPL-3.0-or-later" if "--enable-version3" in version else "GPL-2.0-or-later",
         "upstream": "https://ffmpeg.org/", "source": "https://github.com/FFmpeg/FFmpeg",
         "sourceReleases": "https://ffmpeg.org/releases/",
-        "binaryPackage": "https://pypi.org/project/imageio-ffmpeg/0.6.0/",
+        "binaryPackage": "https://pypi.org/project/imageio-ffmpeg/0.7.0/",
         "binaryBuilds": "https://www.gyan.dev/ffmpeg/builds/" if "gyan.dev" in version else "https://github.com/imageio/imageio-binaries",
         "notice": "The encoder runs as a separate process. Preserve the bundled licenses and the corresponding-source distribution requirements when redistributing this binary.",
     }

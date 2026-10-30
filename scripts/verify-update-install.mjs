@@ -69,7 +69,7 @@ try {
     await writeFile(path.join(fixture, 'package.json'), JSON.stringify(metadata));
     await build({ projectDir: fixture, targets: Platform.WINDOWS.createTarget(['nsis'], Arch.x64), publish: 'never',
       config: { appId: `app.stykanimate.updater-test.${id}`, productName: 'StykAnimate Update Test',
-        electronVersion: '39.8.10', electronDist: path.join(root, 'node_modules', 'electron', 'dist'),
+        electronVersion: '45.1.0', electronDist: path.join(root, 'node_modules', 'electron', 'dist'),
         directories: { app: fixture, output: version === '0.0.1' ? path.join(probe, 'baseline') : target },
         files: ['main.cjs', 'updates.cjs', 'probe.json', 'package.json'],
         publish: [{ provider: 'generic', url }],

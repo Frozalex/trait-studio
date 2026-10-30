@@ -31,7 +31,7 @@ const config = {
   samples: envNumber('STYK_MATCH_SAMPLES', 24), intervalMs: envNumber('STYK_MATCH_INTERVAL_MS', 40),
   amplitudeWorld: envNumber('STYK_MATCH_AMPLITUDE_WORLD', 8),
   coldProcesses: envNumber('STYK_MATCH_COLD_PROCESSES', 3), warmImports: envNumber('STYK_MATCH_WARM_IMPORTS', 1),
-  trace: process.env.STYK_MATCH_TRACE === '1', expectedElectron: process.env.STYK_MATCH_ELECTRON || '39.8.10',
+  trace: process.env.STYK_MATCH_TRACE === '1', expectedElectron: process.env.STYK_MATCH_ELECTRON || '45.1.0',
   profileImport: process.env.STYK_MATCH_PROFILE === '1',
   verifyInitialBatch: process.env.STYK_MATCH_VERIFY_BATCH === '1',
   expectedScanner: process.env.STYK_MATCH_SCANNER || null,

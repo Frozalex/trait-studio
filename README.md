@@ -37,7 +37,7 @@ Les binaires macOS et les applications mobiles natives ne sont pas fournis.
 
 ## Démarrer depuis les sources
 
-Prérequis : **Node.js 22+** et **Python 3.11+**. Les constructions automatisées utilisent Node 24.11 et Python 3.12.9.
+Prérequis : **Node.js 24.22.1+** et **Python 3.11+**. Les constructions automatisées utilisent Node 24.22.1 et Python 3.14.10.
 
 ```bash
 git clone https://github.com/Frozalex/trait-studio.git

@@ -22,3 +22,9 @@ In scope:
 - **The browser build:** its service worker.
 
 Upstream websites and community services are not operated by this project.
+
+## Release checks
+
+Publication requires successful dependency audits and a ClamAV scan of the exact Windows and Linux distribution files and their extracted payloads. The npm audit includes development dependencies because Electron is shipped inside the application. The Python build environment is audited separately. Scan reports and the antivirus signature version are retained as CI artifacts; a failed scan blocks publication.
+
+These checks detect known vulnerabilities and malware signatures. They do not prove that software is free of all vulnerabilities or bugs. Release checks also exercise installation, restart, saving and video export. SHA-256 checksums establish file integrity, not safety. Download only the files attached to the verified release.
