@@ -1,8 +1,5 @@
 name: Publish verified Trait preview
 on:
-  push:
-    branches: [main]
-    paths: [.github/workflows/publish-preview.yml]
   workflow_dispatch:
 permissions:
   contents: write
@@ -46,6 +43,15 @@ jobs:
           cd verified/release
           printf '%s\n' '71526178750bd8b38ab30eb2a1486a10916cafbc3366c219d164bea9efd6518f  TraitStudio-1.3.0-linux-x86_64.AppImage' | sha256sum --check
           sha256sum TraitStudio-1.3.0-linux-x86_64.AppImage latest-linux.yml > SHA256SUMS.txt
-      - name: Publish the verified preview without replacing an existing release
+      - name: Resume or verify the exact preview
         run: |
-          gh release create v1.3.0 verified/release/TraitStudio-1.3.0-linux-x86_64.AppImage verified/release/latest-linux.yml verified/release/SHA256SUMS.txt --repo "$GITHUB_REPOSITORY" --target "$SOURCE_SHA" --title 'Trait Studio 1.3.0 — première préversion publique' --notes-file docs/PREVIEW-1.3.0.md --prerelease
+          gh api "repos/$GITHUB_REPOSITORY/releases/429118154" > "$RUNNER_TEMP/release.json"
+          node -e 'const r=JSON.parse(require("fs").readFileSync(process.argv[1])); if(r.tag_name!=="v1.3.0" || r.target_commitish!==process.env.SOURCE_SHA) process.exit(1);' "$RUNNER_TEMP/release.json"
+          if ! node -e 'const r=JSON.parse(require("fs").readFileSync(process.argv[1])); process.exit(r.assets.some(a=>a.name==="TraitStudio-1.3.0-linux-x86_64.AppImage" && a.state==="uploaded")?0:1);' "$RUNNER_TEMP/release.json"; then
+            gh api --method POST "https://uploads.github.com/repos/$GITHUB_REPOSITORY/releases/429118154/assets?name=TraitStudio-1.3.0-linux-x86_64.AppImage" --header 'Content-Type: application/octet-stream' --input verified/release/TraitStudio-1.3.0-linux-x86_64.AppImage --jq .id
+          fi
+          gh api "repos/$GITHUB_REPOSITORY/releases/429118154" > "$RUNNER_TEMP/release.json"
+          node -e 'const fs=require("fs"),crypto=require("crypto"),r=JSON.parse(fs.readFileSync(process.argv[1])); for(const name of ["TraitStudio-1.3.0-linux-x86_64.AppImage","latest-linux.yml","SHA256SUMS.txt"]) {const a=r.assets.find(a=>a.name===name),b=fs.readFileSync("verified/release/"+name); if(!a||a.state!=="uploaded"||a.size!==b.length||a.digest!=="sha256:"+crypto.createHash("sha256").update(b).digest("hex")) process.exit(1);}' "$RUNNER_TEMP/release.json"
+          if node -e 'process.exit(JSON.parse(require("fs").readFileSync(process.argv[1])).draft?0:1)' "$RUNNER_TEMP/release.json"; then
+            gh api --method PATCH "repos/$GITHUB_REPOSITORY/releases/429118154" -F draft=false --jq .html_url
+          fi
