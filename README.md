@@ -22,7 +22,7 @@ L’édition bureau propose notamment MP4, WebM, GIF, APNG et séquences d’ima
 
 ## Télécharger
 
-[Trait Studio 1.4.0 · Windows et Linux](https://github.com/Frozalex/trait-studio/releases/tag/v1.4.0) · [Périmètre fonctionnel](docs/FEATURE-COVERAGE.md)
+[Trait Studio 1.4.0 · Windows et Linux](https://github.com/Frozalex/trait-studio/releases/tag/v1.4.0) · [Résultats des vérifications](docs/VALIDATION-1.4.0.md)
 
 Sur Windows, utilise **Setup-x64.exe** pour installer le programme ou **Portable-x64.exe** pour le lancer sans installation. Les exécutables ne sont pas signés numériquement.
 
@@ -57,6 +57,8 @@ npm start
 Avec npm 12, si l’installation du binaire Electron est bloquée, examine les scripts avec `npm install-scripts ls`, puis autorise celui du paquet officiel Electron avec `npm install-scripts approve electron`. Les fichiers natifs de distribution sont construits avec les scripts du projet ; voir [la construction bureau](docs/BUILD-TRAIT.md).
 
 ## Premier mouvement
+
+[Guide de prise en main en français](docs/QUICKSTART.fr.md) · [Périmètre fonctionnel](docs/FEATURE-COVERAGE.md)
 
 1. Ouvre un projet et clique **Atelier** dans la barre du haut.
 2. Choisis un mouvement, ajuste sa durée et clique **Insérer le mouvement**.
