@@ -6,6 +6,10 @@ Trait Studio begins at version 1.3.0. Earlier releases and inherited development
 
 ## [Unreleased]
 
+### Added
+
+- Trace a local video into an editable stickman clip, with assisted point tracking, a reference overlay and manual pose corrections.
+
 ## [1.5.0]
 
 Characters and grounded motion
