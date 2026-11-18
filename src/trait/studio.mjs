@@ -5,6 +5,7 @@ import {characterPane} from './character-pane.mjs';
 import {CHARACTER_DEFAULTS} from './character.mjs';
 import {PoseBank,DesktopPoseBank} from './poses.mjs';
 import {rhythmPane} from './rhythm-pane.mjs';
+import {rotoscopePane} from './rotoscope-pane.mjs';
 import {node,button} from './ui.mjs';
 
 /** Uses the existing document, clipboard and history. No parallel editor state. */
@@ -21,8 +22,8 @@ export function installTraitStudio({editor,actions,pause,finishEdit,fail,toast,o
     const say=message=>{status.textContent=message;};
     const safe=fn=>async()=>{try{say('');await ready();await fn();}catch(error){say(error.message);}};
     const show=id=>{disposePane();disposePane=()=>{};pane=id;content.replaceChildren();say('');for(const t of tabs.children){const selected=t.dataset.pane===id;t.setAttribute('aria-selected',String(selected));t.tabIndex=selected?0:-1;}content.id=`trait-pane-${id}`;content.setAttribute('role','tabpanel');content.setAttribute('aria-labelledby',`trait-tab-${id}`);body.closest('.ui-dialog-body')?.scrollTo(0,0);
-      if(id==='motions')motions();else if(id==='character')characters();else if(id==='poses')poses();else rhythm();};
-    for(const [id,label] of [['motions','Mouvements'],['character','Personnage'],['poses','Mes poses'],['rhythm','Rythme']]){
+      if(id==='motions')motions();else if(id==='character')characters();else if(id==='poses')poses();else if(id==='trace')trace();else rhythm();};
+    for(const [id,label] of [['motions','Mouvements'],['character','Personnage'],['poses','Mes poses'],['rhythm','Rythme'],['trace','Vidéo → stickman']]){
       const b=button(label,()=>show(id),'ghost');b.id=`trait-tab-${id}`;b.dataset.pane=id;b.setAttribute('role','tab');b.setAttribute('aria-controls',`trait-pane-${id}`);tabs.append(b);
     }
     tabs.addEventListener('keydown',event=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;event.preventDefault();const all=[...tabs.children],i=all.findIndex(b=>b.dataset.pane===pane),next=event.key==='Home'?0:event.key==='End'?all.length-1:(i+(event.key==='ArrowRight'?1:all.length-1))%all.length;all[next].click();all[next].focus();});
@@ -30,6 +31,7 @@ export function installTraitStudio({editor,actions,pause,finishEdit,fail,toast,o
     function characters(){characterPane(content,{editor,dialog,safe,say,getCharacter,setCharacter,testFigure:report=>testFigure(report,()=>open('character')),editFigure:()=>actions['edit-in-build-mode']()});}
     function poses(){posesPane(content,{bank,editor,dialog,safe,say});}
     function rhythm(){disposePane=rhythmPane(content,{editor,pause,safe,say,audioEngine});}
+    function trace(){disposePane=rotoscopePane(content,{editor,dialog,safe,say,toast,getCharacter});}
     show(startPane);void dialog.showModal().finally(()=>{disposePane();active=null;});
   }
   actions['trait-workshop']=async()=>{try{await ready();open();}catch(error){fail(error);}};

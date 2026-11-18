@@ -25,6 +25,10 @@
   .trait-hint, .trait-empty { color: var(--theme-secondary); line-height: 1.65; font-size: 12px; }
   .trait-empty { padding: 24px; border: 1px dashed var(--theme-border); border-radius: 12px; text-align: center; }
   .trait-message { min-block-size: 18px; margin-block: 12px 0; color: var(--theme-accent); font-size: 12px; }
+  .trait-trace-stage { display: grid; place-items: center; border: 1px solid var(--theme-border); border-radius: 14px; background: var(--theme-subtle); overflow: hidden; }
+  .trait-trace-canvas { display: block; max-inline-size: 100%; max-block-size: 320px; inline-size: auto; block-size: auto; touch-action: none; cursor: crosshair; }
+  .trait-trace-canvas:focus-visible { outline: 3px solid var(--theme-accent); outline-offset: -3px; }
+  .trait-trace-stage :where([hidden]) { display: none; }
   .trait-pose-list, .trait-markers { display: grid; gap: 6px; max-block-size: 280px; overflow: auto; }
   .trait-pose-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 10px; border: 1px solid var(--theme-border); border-radius: 8px; }
   .trait-pose-row :where(strong) { flex: 1; overflow-wrap: anywhere; }
